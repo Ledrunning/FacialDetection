@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:FaceDetector"
+        xmlns:emui="clr-namespace:Emgu.CV.UI;assembly=Emgu.CV.UI"
         mc:Ignorable="d"
         Title="Face Detector" TextBlock.TextAlignment="Center" MinWidth="200" Height="600" Width="600">
     <Window.Background>
@@ -25,9 +25,8 @@
             <TabControl  x:Name="mainTab" 
                          Margin="0"
                          VerticalAlignment="Stretch"
-                         Height="{Binding Path=ActualHeight,
-                         RelativeSource={RelativeSource Mode=FindAncestor,
-                         AncestorType={x:Type Window}}}"> <!--SelectionChanged="mainTab_SelectionChanged" -->
+                         Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}">
+                <!--SelectionChanged="mainTab_SelectionChanged" -->
                 <TabControl.Resources>
                     <Style TargetType="{x:Type TabItem}">
                         <Style.Triggers>
@@ -65,7 +64,7 @@
                                 BorderThickness="1,1,1,0"
                                 CornerRadius="5,5,0,0"
                                 Padding="25,5,25,5">
-                                      <ContentPresenter x:Name="ContentSite" ContentSource="Header" />
+                                        <ContentPresenter x:Name="ContentSite" ContentSource="Header" />
                                     </Border>
 
                                     <ControlTemplate.Triggers>
@@ -88,44 +87,48 @@
                 <TabItem  x:Name="cameraCaption">
                     <TabItem.Header>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Margin="3" FontFamily="Arial">Camera Capture</TextBlock>
+                            <TextBlock Margin="3" FontFamily="Arial"><Run Text="Camera Capture"/></TextBlock>
                         </StackPanel>
                     </TabItem.Header>
+                    <!-- <Image Name="imageBox" Height="500" Width="500"/> -->
+                   
+                    <WindowsFormsHost Width="550px" Height="550px" HorizontalAlignment="Left" VerticalAlignment="Top" Cursor="None">
+                        <emui:ImageBox x:Name="imageBox" BackColor="Transparent"></emui:ImageBox>
+                        </WindowsFormsHost>
+                   
                 </TabItem>
 
                 <TabItem  x:Name="faceDetection" HorizontalAlignment="Right" Width="137">
                     <TabItem.Header>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Margin="3" FontFamily="Arial">Face detection</TextBlock>
+                            <TextBlock Margin="3" FontFamily="Arial"><Run Text="Face detection"/></TextBlock>
                         </StackPanel>
                     </TabItem.Header>
-                    <TabItem.Content>
-                        <TextBox x:Name="currency" Grid.Column="0" Background="Transparent" BorderThickness="0" 
+                    <TextBox x:Name="currency" Grid.Column="0" Background="Transparent" BorderThickness="0" 
                                  ToolTip="Переконвертированная валюта" FontFamily="Comic Sans MS" FontSize="48" 
                                  IsUndoEnabled="False" IsReadOnly="True" TextAlignment="Center" VerticalAlignment="Center"/>
-                    </TabItem.Content>
 
                 </TabItem>
                 <TabItem x:Name="blinkDetectionChart">
                     <TabItem.Header>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Margin="3" FontFamily="Arial">Blink Chart</TextBlock>
+                            <TextBlock Margin="3" FontFamily="Arial"><Run Text="Blink Chart"/></TextBlock>
                         </StackPanel>
                     </TabItem.Header>
-                    <TabItem.Content>
-                        <StackPanel>
-                            <TextBox x:Name="weather" Grid.Column="0" Background="Transparent" BorderThickness="0" 
-                                 ToolTip="Переконвертированная валюта" FontFamily="Comic Sans MS" FontSize="48" 
-                                 TextWrapping="Wrap"
-                                 IsUndoEnabled="False" IsReadOnly="True" TextAlignment="Center" VerticalAlignment="Center"/>
-                            <!--<Image x:Name="image" Source="Resources\Sunny.png" VerticalAlignment="Center"
-                                   Stretch="Fill" Margin="170,0,200,0"/> -->
-                        </StackPanel>
-
-                    </TabItem.Content>
-
-                </TabItem>
+                 </TabItem>
             </TabControl>
         </StackPanel>
+        <Button x:Name="captureButton" Content="Start" Click="captureButton_Click" Margin="33,36,25,473" FontFamily="Arial" Grid.Column="1" Width="60" Height="60">
+            <Button.Template>
+                <ControlTemplate  TargetType="{x:Type Button}">
+                    <Grid>
+                        <Ellipse Fill="DarkSalmon"/>
+                        <Label Content="{TemplateBinding Content}" HorizontalAlignment="Center"
+                            VerticalAlignment="Center"/>
+                    </Grid>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+     
     </Grid>
 </Window>
