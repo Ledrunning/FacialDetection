@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:emui="clr-namespace:Emgu.CV.UI;assembly=Emgu.CV.UI"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
         Title="Face Detector" TextBlock.TextAlignment="Center" MinWidth="200" Height="600" Width="600">
     <Window.Background>
         <LinearGradientBrush StartPoint="0.5,0" EndPoint="1,1">
@@ -21,11 +22,26 @@
             <ColumnDefinition Width="4*"></ColumnDefinition>
             <ColumnDefinition Width="1*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,0,0,10">
+
+        <Menu Background="Transparent" Margin="0,0,276,534">
+            <MenuItem Background="Transparent" Header="File" Height="21" >
+                <MenuItem Background="Transparent" Header="Open Video" Click="VideoOpen_Click" />
+                <MenuItem Background="Transparent" Header="Save" />
+                <MenuItem Background="Transparent" Header="Save As" />
+                <MenuItem Background="Transparent" Header="Exit" Click="MenuItem_Click"  />
+                <Separator></Separator>
+            </MenuItem>
+            <MenuItem Background="Transparent" Header="References">
+                <MenuItem Background="Transparent" Header="Help"  />
+                <MenuItem Background="Transparent" Header="About"  />
+            </MenuItem>
+        </Menu>
+
+        <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,40,0,10">
             <TabControl  x:Name="mainTab" 
                          Margin="0"
                          VerticalAlignment="Stretch"
-                         Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}">
+                         Height="469">
                 <!--SelectionChanged="mainTab_SelectionChanged" -->
                 <TabControl.Resources>
                     <Style TargetType="{x:Type TabItem}">
@@ -46,7 +62,7 @@
                 <TabControl.Background>
                     <LinearGradientBrush EndPoint="1.115,1.13" StartPoint="0,-0.02">
                         <GradientStop Color="Transparent" Offset="1"/>
-                        <GradientStop Color="White" Offset="0"/>
+                        <GradientStop Color="Transparent" Offset="0"/>
                     </LinearGradientBrush>
                 </TabControl.Background>
 
@@ -87,15 +103,15 @@
                 <TabItem  x:Name="cameraCaption">
                     <TabItem.Header>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Margin="3" FontFamily="Arial"><Run Text="Camera Capture"/></TextBlock>
+                            <TextBlock Margin="3" FontFamily="Arial"><Run Text="Camera and video Capture"/></TextBlock>
                         </StackPanel>
                     </TabItem.Header>
-                    <!-- <Image Name="imageBox" Height="500" Width="500"/> -->
-                   
-                    <WindowsFormsHost Width="550px" Height="550px" HorizontalAlignment="Left" VerticalAlignment="Top" Cursor="None">
-                        <emui:ImageBox x:Name="imageBox" BackColor="Transparent"></emui:ImageBox>
-                        </WindowsFormsHost>
-                   
+                    <Image Name="imageBox" Height="500" Width="500"/>
+                    <!--
+                    <WindowsFormsHost Width="465px" Height="429" HorizontalAlignment="Left" VerticalAlignment="Top" Cursor="Hand" Opacity="0.5">
+                        <emui:ImageBox x:Name="imageBox" BackColor="Transparent" BackgroundImageLayout="None"></emui:ImageBox>
+                    </WindowsFormsHost>
+                    -->
                 </TabItem>
 
                 <TabItem  x:Name="faceDetection" HorizontalAlignment="Right" Width="137">
@@ -115,20 +131,20 @@
                             <TextBlock Margin="3" FontFamily="Arial"><Run Text="Blink Chart"/></TextBlock>
                         </StackPanel>
                     </TabItem.Header>
-                 </TabItem>
+                </TabItem>
             </TabControl>
         </StackPanel>
-        <Button x:Name="captureButton" Content="Start" Click="captureButton_Click" Margin="33,36,25,473" FontFamily="Arial" Grid.Column="1" Width="60" Height="60">
+
+        <Button x:Name="captureButton" Content="Start" Click="captureButton_Click" Margin="33,48,34,466" FontFamily="Arial" Grid.Column="1" RenderTransformOrigin="0.533,-0.017">
             <Button.Template>
-                <ControlTemplate  TargetType="{x:Type Button}">
+                <ControlTemplate TargetType="{x:Type Button}">
                     <Grid>
-                        <Ellipse Fill="DarkSalmon"/>
+                        <Ellipse Fill="red"/>
                         <Label Content="{TemplateBinding Content}" HorizontalAlignment="Center"
                             VerticalAlignment="Center"/>
                     </Grid>
                 </ControlTemplate>
             </Button.Template>
         </Button>
-     
     </Grid>
 </Window>

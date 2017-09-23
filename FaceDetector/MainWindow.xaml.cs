@@ -1,8 +1,10 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Structure;
 using FaceDetector.Service;
+using System.IO;
 using System;
 using System.Windows;
+using Microsoft.Win32;
 
 namespace FaceDetector
 {
@@ -11,9 +13,9 @@ namespace FaceDetector
     /// </summary>
     public partial class MainWindow : Window
     {
-        private VideoCapture _capture = null;
-        private bool _captureInProgress;
-        private Mat _frame;
+        private VideoCapture capture = null;
+        private bool captureInProgress;
+        private Mat frame;
         
         public MainWindow()
         {
@@ -24,9 +26,9 @@ namespace FaceDetector
             CvInvoke.UseOpenCL = false;
             try
             {
-                _capture = new VideoCapture();
+                capture = new VideoCapture();
                 // Подписываемся на событие
-                _capture.ImageGrabbed += ProcessFrame;
+                capture.ImageGrabbed += ProcessFrame;
             }
             catch (NullReferenceException excpt)
             {
@@ -34,51 +36,100 @@ namespace FaceDetector
             }
 
            
-            _frame = new Mat();
+            frame = new Mat();
            
         }
 
         private void ProcessFrame(object sender, EventArgs arg)
         {
-            if (_capture != null && _capture.Ptr != IntPtr.Zero)
+            if (capture != null && capture.Ptr != IntPtr.Zero)
             {
-                _capture.Retrieve(_frame, 0);
+                capture.Retrieve(frame, 0);
 
-                //var temp = _frame.ToImage<Bgr, byte>().Bitmap;
-  
-                imageBox.Image = _frame;
+                //var temp = frame.ToImage<Bgr, byte>().Bitmap;
 
-                //  imageBox.Source = BitmapSourceConvert.ToBitmapSource(temp as Image);
+                //imageBox.Image = frame;
+
+                Dispatcher.Invoke(new Action(() => imageBox.Source = BitmapSourceConvert.ToBitmapSource(frame as IImage)));
+                
             }
         }
 
         private void captureButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_capture != null)
+            if (capture != null)
             {
-                if (_captureInProgress)
+                if (captureInProgress)
                 {  //stop the capture
                     captureButton.Content = "Start Capture";
-                    _capture.Pause();
+                    capture.Pause();
                 }
                 else
                 {
                     //start the capture
                     captureButton.Content = "Stop";
 
-                    _capture.Start();
+                    capture.Start();
                 }
 
-                _captureInProgress = !_captureInProgress;
+                captureInProgress = !captureInProgress;
             }
         }
 
         private void ReleaseData()
         {
-            if (_capture != null)
-                _capture.Dispose();
+            if (capture != null)
+                capture.Dispose();
         }
 
-     
+              
+        private void VideoOpen_Click(object sender, RoutedEventArgs e)
+        { 
+            OpenFileDialog openFile = new OpenFileDialog();
+            openFile.InitialDirectory = "c:\\";
+            openFile.Filter = "Video Files |*.mp4";
+            openFile.RestoreDirectory = true;
+
+            //if (capture == null)
+            //{
+
+
+            if (openFile.ShowDialog() == true)
+            {
+
+                try
+                {
+                    capture = new VideoCapture(openFile.FileName);
+                    capture.ImageGrabbed += VideoFrames;
+                    capture.Start();
+                }
+                catch (FileFormatException errmsg)
+                {
+                    MessageBox.Show("Ошибка открытия файла", errmsg.Message,
+                                    MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void VideoFrames(object sender, EventArgs e)
+        {
+            if (capture != null && capture.Ptr != IntPtr.Zero)
+            {
+                capture.Retrieve(frame, 0);
+
+                //var temp = _frame.ToImage<Bgr, byte>().Bitmap;
+
+                //imageBox.Image = frame;
+
+                //  imageBox.Source = BitmapSourceConvert.ToBitmapSource(temp as Image);
+                Dispatcher.Invoke(new Action(() => imageBox.Source = BitmapSourceConvert.ToBitmapSource(frame as IImage)));
+            }
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            capture.Dispose();
+            this.Close();
+        }
     }
 }
