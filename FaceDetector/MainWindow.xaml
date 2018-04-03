@@ -24,127 +24,35 @@
         </Grid.ColumnDefinitions>
 
         <Menu Background="Transparent" Margin="0,0,276,534">
-            <MenuItem Background="Transparent" Header="File" Height="21" >
-                <MenuItem Background="Transparent" Header="Open Video" Click="VideoOpen_Click" />
-                <MenuItem Background="Transparent" Header="Save" />
-                <MenuItem Background="Transparent" Header="Save As" />
+            <MenuItem Background="Transparent" Header="Файл" Height="21" >
+                <MenuItem Background="Transparent" Header="Открыть видео" Click="VideoOpen_Click" />
+                <MenuItem Background="Transparent" Header="Закрыть видео" Click="VideoClose_Click" />
                 <MenuItem Background="Transparent" Header="Exit" Click="MenuItem_Click"  />
                 <Separator></Separator>
             </MenuItem>
-            <MenuItem Background="Transparent" Header="References">
-                <MenuItem Background="Transparent" Header="Help"  />
-                <MenuItem Background="Transparent" Header="About"  />
-            </MenuItem>
         </Menu>
 
-        <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,40,0,10">
-            <TabControl  x:Name="mainTab" 
-                         Margin="0"
-                         VerticalAlignment="Stretch"
-                         Height="469">
-                <!--SelectionChanged="mainTab_SelectionChanged" -->
-                <TabControl.Resources>
-                    <Style TargetType="{x:Type TabItem}">
-                        <Style.Triggers>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Background">
-                                    <Setter.Value>
-                                        <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
-                                            <GradientStop Color="Coral" Offset="0"/>
-                                            <GradientStop Color="LightCoral" Offset="1"/>
-                                        </LinearGradientBrush>
-                                    </Setter.Value>
-                                </Setter>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </TabControl.Resources>
-                <TabControl.Background>
-                    <LinearGradientBrush EndPoint="1.115,1.13" StartPoint="0,-0.02">
-                        <GradientStop Color="Transparent" Offset="1"/>
-                        <GradientStop Color="Transparent" Offset="0"/>
-                    </LinearGradientBrush>
-                </TabControl.Background>
-
-                <TabControl.Effect>
-                    <DropShadowEffect/>
-                </TabControl.Effect>
-                <TabControl.ItemContainerStyle>
-                    <Style TargetType="{x:Type TabItem}">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type TabItem}">
-                                    <Border x:Name="Border"
-                                Margin="0,0,0,0"
-                                BorderBrush="Gainsboro"
-                                BorderThickness="1,1,1,0"
-                                CornerRadius="5,5,0,0"
-                                Padding="25,5,25,5">
-                                        <ContentPresenter x:Name="ContentSite" ContentSource="Header" />
-                                    </Border>
-
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsSelected" Value="True">
-                                            <Setter TargetName="ContentSite" Property="TextElement.Foreground" Value="White" />
-                                            <Setter TargetName="Border" Property="Background" Value="Coral" />
-                                        </Trigger>
-
-                                        <Trigger Property="IsSelected" Value="False">
-                                            <Setter TargetName="ContentSite" Property="TextElement.Foreground" Value="Black" />
-                                            <Setter TargetName="Border" Property="Background" Value="DarkSalmon" />
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </TabControl.ItemContainerStyle>
-
-                <TabItem  x:Name="cameraCaption">
-                    <TabItem.Header>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Margin="3" FontFamily="Arial"><Run Text="Camera and video Capture"/></TextBlock>
-                        </StackPanel>
-                    </TabItem.Header>
-                    <Image Name="imageBox" Height="500" Width="500"/>
-                    <!--
-                    <WindowsFormsHost Width="465px" Height="429" HorizontalAlignment="Left" VerticalAlignment="Top" Cursor="Hand" Opacity="0.5">
-                        <emui:ImageBox x:Name="imageBox" BackColor="Transparent" BackgroundImageLayout="None"></emui:ImageBox>
-                    </WindowsFormsHost>
-                    -->
-                </TabItem>
-
-                <TabItem  x:Name="faceDetection" HorizontalAlignment="Right" Width="137">
-                    <TabItem.Header>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Margin="3" FontFamily="Arial"><Run Text="Face detection"/></TextBlock>
-                        </StackPanel>
-                    </TabItem.Header>
-                    <TextBox x:Name="currency" Grid.Column="0" Background="Transparent" BorderThickness="0" 
-                                 ToolTip="Переконвертированная валюта" FontFamily="Comic Sans MS" FontSize="48" 
-                                 IsUndoEnabled="False" IsReadOnly="True" TextAlignment="Center" VerticalAlignment="Center"/>
-
-                </TabItem>
-                <TabItem x:Name="blinkDetectionChart">
-                    <TabItem.Header>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Margin="3" FontFamily="Arial"><Run Text="Blink Chart"/></TextBlock>
-                        </StackPanel>
-                    </TabItem.Header>
-                </TabItem>
-            </TabControl>
+        <StackPanel Margin="10,35,0,10">
+            <Image Name="imageBox" Stretch="Fill" Cursor="Hand" />
         </StackPanel>
-
-        <Button x:Name="captureButton" Content="Start" Click="captureButton_Click" Margin="33,48,34,466" FontFamily="Arial" Grid.Column="1" RenderTransformOrigin="0.533,-0.017">
-            <Button.Template>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Grid>
-                        <Ellipse Fill="red"/>
-                        <Label Content="{TemplateBinding Content}" HorizontalAlignment="Center"
-                            VerticalAlignment="Center"/>
-                    </Grid>
-                </ControlTemplate>
-            </Button.Template>
-        </Button>
+  
+        <StackPanel Grid.Column="1" Margin="0,48,0,0">
+            <Label FontFamily="Arial">Выберите источник</Label>
+            <ComboBox x:Name="chooseInput" FontFamily="Arial"
+                      SelectionChanged="chooseInput_SelectionChanged"
+                      Text="{Binding ElementName=txt, Path=Text}">
+                <ComboBox.Resources>
+                    <!-- color of ComboBoxItem -->
+                    <SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}" Color="LightSalmon" />
+                    <!-- Mouse over color of ComboBoxItem -->
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="DarkSalmon" />
+                </ComboBox.Resources>
+               
+            </ComboBox>
+        </StackPanel>
+        <StackPanel  Grid.Column="1" Margin="0,200,0,300">
+            <Button x:Name="captureButton" Content="Старт" Click="captureButton_Click" 
+                Background="Transparent" BorderThickness="4" BorderBrush="Gray" FontFamily="Arial" RenderTransformOrigin="0.533,-0.017" Height="26"/>
+        </StackPanel>
     </Grid>
 </Window>

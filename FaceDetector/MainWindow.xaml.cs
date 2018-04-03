@@ -5,6 +5,10 @@ using System.IO;
 using System;
 using System.Windows;
 using Microsoft.Win32;
+using System.Diagnostics;
+using System.Threading;
+using Emgu.CV.CvEnum;
+using System.Windows.Controls;
 
 namespace FaceDetector
 {
@@ -14,13 +18,20 @@ namespace FaceDetector
     public partial class MainWindow : Window
     {
         private VideoCapture capture = null;
+        private VideoCapture cap = null;
         private bool captureInProgress;
+        private bool capturingFlag;
         private Mat frame;
-        
+        private const int FPS = 33; //(1000 / 30);
+
+        private readonly string[] cmbItems = { "Видео", "Захват камеры" };
+
+
         public MainWindow()
         {
             InitializeComponent();
-
+            chooseInput.ItemsSource = cmbItems;
+            chooseInput.SelectedIndex = 1;
             // Инит EMGUU 
 
             CvInvoke.UseOpenCL = false;
@@ -40,34 +51,20 @@ namespace FaceDetector
            
         }
 
-        private void ProcessFrame(object sender, EventArgs arg)
-        {
-            if (capture != null && capture.Ptr != IntPtr.Zero)
-            {
-                capture.Retrieve(frame, 0);
-
-                //var temp = frame.ToImage<Bgr, byte>().Bitmap;
-
-                //imageBox.Image = frame;
-
-                Dispatcher.Invoke(new Action(() => imageBox.Source = BitmapSourceConvert.ToBitmapSource(frame as IImage)));
-                
-            }
-        }
-
         private void captureButton_Click(object sender, RoutedEventArgs e)
         {
-            if (capture != null)
+            if (capture != null && capturingFlag)
             {
                 if (captureInProgress)
-                {  //stop the capture
-                    captureButton.Content = "Start Capture";
-                    capture.Pause();
+                { 
+                    //stop the capture
+                    captureButton.Content = "Старт";
+                    capture.Stop();
                 }
                 else
                 {
                     //start the capture
-                    captureButton.Content = "Stop";
+                    captureButton.Content = "Стоп";
 
                     capture.Start();
                 }
@@ -84,7 +81,7 @@ namespace FaceDetector
 
               
         private void VideoOpen_Click(object sender, RoutedEventArgs e)
-        { 
+        {
             OpenFileDialog openFile = new OpenFileDialog();
             openFile.InitialDirectory = "c:\\";
             openFile.Filter = "Video Files |*.mp4";
@@ -96,12 +93,11 @@ namespace FaceDetector
 
             if (openFile.ShowDialog() == true)
             {
-
                 try
                 {
-                    capture = new VideoCapture(openFile.FileName);
-                    capture.ImageGrabbed += VideoFrames;
-                    capture.Start();
+                    cap = new VideoCapture(openFile.FileName);
+                    cap.ImageGrabbed += VideoFrames;
+                    cap.Start();
                 }
                 catch (FileFormatException errmsg)
                 {
@@ -111,25 +107,63 @@ namespace FaceDetector
             }
         }
 
-        private void VideoFrames(object sender, EventArgs e)
+        
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            ReleaseData();
+            this.Close();
+        }
+
+        private void VideoClose_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void chooseInput_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+
+            //string text = ((ComboBoxItem)chooseInput.SelectedItem).Content.ToString();
+            if (chooseInput.SelectedItem == "Захват камеры")
+            {
+                capturingFlag = true;
+                captureButton.Content = "Старт";
+            }
+            else
+            {
+                capturingFlag = false;
+                capture.Stop();
+                captureButton.Content = "Стоп";
+            }
+                
+        }
+
+        #region Frames events
+        private void ProcessFrame(object sender, EventArgs arg)
         {
             if (capture != null && capture.Ptr != IntPtr.Zero)
             {
                 capture.Retrieve(frame, 0);
 
-                //var temp = _frame.ToImage<Bgr, byte>().Bitmap;
+                //var temp = frame.ToImage<Bgr, byte>().Bitmap;
 
                 //imageBox.Image = frame;
 
+                Dispatcher.Invoke(new Action(() => imageBox.Source = BitmapSourceConvert.ToBitmapSource(frame as IImage)));
+
+            }
+        }
+
+        private void VideoFrames(object sender, EventArgs e)
+        {
+            if (cap != null && cap.Ptr != IntPtr.Zero)
+            {
+                cap.Retrieve(frame, 0);
+
+                Thread.Sleep(FPS);
                 //  imageBox.Source = BitmapSourceConvert.ToBitmapSource(temp as Image);
                 Dispatcher.Invoke(new Action(() => imageBox.Source = BitmapSourceConvert.ToBitmapSource(frame as IImage)));
             }
         }
-
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            capture.Dispose();
-            this.Close();
-        }
+        #endregion
     }
 }

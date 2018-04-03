@@ -26,3 +26,4 @@ D:\IT_STEP\Projects\IT_STEP_C_SHARP\FaceDetector\FaceDetectorWPF\FaceDetector\Fa
 D:\IT_STEP\Projects\IT_STEP_C_SHARP\FaceDetector\FaceDetectorWPF\FaceDetector\FaceDetector\obj\Debug\FaceDetector.csproj.CoreCompileInputs.cache
 D:\IT_STEP\Projects\IT_STEP_C_SHARP\FaceDetector\FaceDetectorWPF\FaceDetector\FaceDetector\obj\Debug\FaceDetector.exe
 D:\IT_STEP\Projects\IT_STEP_C_SHARP\FaceDetector\FaceDetectorWPF\FaceDetector\FaceDetector\obj\Debug\FaceDetector.pdb
+D:\IT_STEP\Projects\IT_STEP_C_SHARP\FaceDetector\FaceDetectorWPF\FaceDetector\FaceDetector\obj\Debug\FaceDetector.csproj.CopyComplete
