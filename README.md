@@ -1,5 +1,5 @@
 # CameraCapture
-## Camera capture using Emgu framework
+## Camera capture using Emgu 3.x framework
 To run app you should put these library into the bin folder (Debug or Release)
 * concrt140.dll
 * cvextern.dll
