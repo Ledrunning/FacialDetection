@@ -11,6 +11,8 @@ using System.Windows;
 using System.Windows.Threading;
 using System.Media;
 using System.Diagnostics;
+using FaceDetector.Helpers;
+
 namespace FaceDetector.ViewModel
 {
     public class MainViewModel : BaseViewModel
@@ -54,7 +56,7 @@ namespace FaceDetector.ViewModel
         /// <summary>
         /// .ctor
         /// </summary>
-        public MainWindowViewModel()
+        public MainViewModel()
         {
             InitializeServices();
             InitializeCommands();
@@ -72,7 +74,7 @@ namespace FaceDetector.ViewModel
         /// </summary>
         private void InitializeCommands()
         {
-            _toggleWebServiceCommand = new RelayCommand(ToggleWebServiceExecute);
+            _toggleWebServiceCommand = new RelayCommand<>(ToggleWebServiceExecute);
             _togglePhotoShootServiceCommand = new RelayCommand(TogglePhotoShootServiceExecute);
             _toogleHelpCallCommand = new RelayCommand(ToogleHelpServiceExecute);
         }
