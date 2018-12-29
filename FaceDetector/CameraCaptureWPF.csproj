@@ -77,7 +77,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\BitmapSourceConvert.cs" />
-    <Compile Include="Helpers\DelegateCommand.cs" />
+    <Compile Include="Helpers\RelayCommand.cs" />
     <Compile Include="Helpers\NotificationObject.cs" />
     <Compile Include="Core\FaceDetetion.cs" />
     <Page Include="View\MainWindow.xaml">
