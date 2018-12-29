@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:emui="clr-namespace:Emgu.CV.UI;assembly=Emgu.CV.UI"
+        xmlns:view="clr-namespace:FaceDetector.View"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Title="Face Detector" TextBlock.TextAlignment="Center" MinWidth="200" Height="600" Width="600">
@@ -19,11 +20,13 @@
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="4*"></ColumnDefinition>
-            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="133*"></ColumnDefinition>
+            <ColumnDefinition Width="272*"/>
+            <ColumnDefinition Width="69*"/>
+            <ColumnDefinition Width="118*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <Menu Background="Transparent" Margin="0,0,276,534">
+        <Menu Background="Transparent" Margin="0,0,206.579,534" Grid.ColumnSpan="2">
             <MenuItem Background="Transparent" Header="Файл" Height="21" >
                 <MenuItem Background="Transparent" Header="Открыть видео" Click="VideoOpen_Click" />
                 <MenuItem Background="Transparent" Header="Закрыть видео" Click="VideoClose_Click" />
@@ -32,11 +35,11 @@
             </MenuItem>
         </Menu>
 
-        <StackPanel Margin="10,35,0,10">
-            <Image Name="imageBox" Stretch="Fill" Cursor="Hand" />
+        <StackPanel Margin="10,35,0,10" Grid.ColumnSpan="3">
+            <view:FrameView/>
         </StackPanel>
-  
-        <StackPanel Grid.Column="1" Margin="0,48,0,0">
+
+        <StackPanel Grid.Column="3" Margin="0,48,0,0">
             <Label FontFamily="Arial">Выберите источник</Label>
             <ComboBox x:Name="chooseInput" FontFamily="Arial"
                       SelectionChanged="chooseInput_SelectionChanged"
@@ -47,10 +50,10 @@
                     <!-- Mouse over color of ComboBoxItem -->
                     <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="DarkSalmon" />
                 </ComboBox.Resources>
-               
+
             </ComboBox>
         </StackPanel>
-        <StackPanel  Grid.Column="1" Margin="0,200,0,300">
+        <StackPanel  Grid.Column="3" Margin="0,200,0,300">
             <Button x:Name="captureButton" Content="Старт" Click="captureButton_Click" 
                 Background="Transparent" BorderThickness="4" BorderBrush="Gray" FontFamily="Arial" RenderTransformOrigin="0.533,-0.017" Height="26"/>
         </StackPanel>

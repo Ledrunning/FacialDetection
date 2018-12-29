@@ -93,6 +93,9 @@
     <Page Include="Skin\Theme.Colors.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\FrameView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -104,6 +107,9 @@
     <Compile Include="Service\WebCamService.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="View\FrameView.xaml.cs">
+      <DependentUpon>FrameView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
