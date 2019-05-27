@@ -5,6 +5,7 @@ using Emgu.CV;
 using Emgu.CV.Cuda;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
+using FaceDetector.Service;
 
 #if !(__IOS__ || NETFX_CORE)
 
@@ -13,7 +14,7 @@ using Emgu.CV.Structure;
 
 namespace CameraCaptureWPF.Service
 {
-    public class FaceDetection
+    public class FaceDetection : WebCamService
     {
         #region EmguDetector
 

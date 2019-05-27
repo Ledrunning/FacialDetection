@@ -7,7 +7,7 @@ namespace CameraCaptureWPF.ViewModel
 {
     public class MainViewModel : BaseViewModel
     {
-        private string __videoSourceEntry;
+        private string _videoSourceEntry;
         private Bitmap _frame;
 
         private bool _isStreaming;
@@ -32,11 +32,11 @@ namespace CameraCaptureWPF.ViewModel
 
         public string VideoSourceEntry
         {
-            get => __videoSourceEntry;
+            get => _videoSourceEntry;
             set
             {
-                if (__videoSourceEntry == value) return;
-                __videoSourceEntry = value;
+                if (_videoSourceEntry == value) return;
+                _videoSourceEntry = value;
                 OnPropertyChanged("VideoSourceEntry");
             }
         }
