@@ -26,9 +26,9 @@
 
         <Menu Background="Transparent" Margin="0,0,206.579,534" Grid.ColumnSpan="2">
             <MenuItem Background="Transparent" Header="Файл" Height="21">
-                <MenuItem Background="Transparent" Header="Открыть видео" Click="VideoOpen_Click" />
-                <MenuItem Background="Transparent" Header="Закрыть видео" Click="VideoClose_Click" />
-                <MenuItem Background="Transparent" Header="Exit" Click="MenuItem_Click" />
+                <MenuItem Background="Transparent" Header="{Binding OpenSource}" Click="VideoOpen_Click" />
+                <MenuItem Background="Transparent" Header="{Binding CloseSource}" Click="VideoClose_Click" />
+                <MenuItem Background="Transparent" Header="{Binding Exit}" Click="MenuItem_Click" />
                 <Separator />
             </MenuItem>
         </Menu>
@@ -42,15 +42,8 @@
             <Label FontFamily="Arial">Выберите источник</Label>
             <ComboBox x:Name="chooseInput" FontFamily="Arial"
                       SelectionChanged="chooseInput_SelectionChanged"
-                      Text="{Binding ElementName=txt, Path=Text}">
-                <ComboBox.Resources>
-                    <!-- color of ComboBoxItem -->
-                    <SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}" Color="LightSalmon" />
-                    <!-- Mouse over color of ComboBoxItem -->
-                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="DarkSalmon" />
-                </ComboBox.Resources>
-
-            </ComboBox>
+                      ItemsSource="{Binding Path=Video}"
+                      SelectedValue="{Binding Path=VideoSourceEntry}" />
         </StackPanel>
         <StackPanel Grid.Column="3" Margin="0,200,0,300">
             <Button x:Name="captureButton" Content="Старт" Click="captureButton_Click"

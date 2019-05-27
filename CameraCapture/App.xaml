@@ -28,10 +28,10 @@
 
             </ResourceDictionary.MergedDictionaries>
 
-            <!-- <SolidColorBrush x:Key="BackgroundKey" Color="#FFFFFF" /> -->
+            <!-- <SolidColorBrush x:Key="BackgroundKey" Color="#FFFFFF" /> Color="#FF181818" -->
 
             <!-- Dark Theme -->
-            <SolidColorBrush x:Key="BackgroundKey" Color="#FF181818" />
+            <SolidColorBrush x:Key="BackgroundKey" Color="#FFFFFF" />
 
             <Style x:Key="HeaderTextBlockStyle" TargetType="TextBlock">
                 <Setter Property="FontSize" Value="22" />

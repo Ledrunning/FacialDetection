@@ -20,8 +20,6 @@ namespace CameraCaptureWPF.View
         private const int Fps = 33; //(1000 / 30);
         private CascadeClassifier _haar;
 
-        private readonly string[] _cmbItems = { "Видео", "Захват камеры" };
-
         public MainWindow()
         {
             InitializeComponent();
