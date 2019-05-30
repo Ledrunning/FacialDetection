@@ -25,9 +25,9 @@
         </Grid.ColumnDefinitions>
 
         <Menu Background="Transparent" Margin="0,0,206.579,534" Grid.ColumnSpan="2">
-            <MenuItem Background="Transparent" Header="Файл" Height="21">
-                <MenuItem Background="Transparent" Header="{Binding OpenSource}" Click="VideoOpen_Click" />
-                <MenuItem Background="Transparent" Header="{Binding CloseSource}" Click="VideoClose_Click" />
+            <MenuItem Background="Transparent" Header="File" Height="21">
+                <MenuItem Background="Transparent" Header="{Binding Open Source}" Click="VideoOpen_Click" Command="{Binding ToogleOpenVideoCommand}" />
+                <MenuItem Background="Transparent" Header="{Binding Close Source}" Click="VideoClose_Click" />
                 <MenuItem Background="Transparent" Header="{Binding Exit}" Click="MenuItem_Click" />
                 <Separator />
             </MenuItem>

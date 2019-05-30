@@ -14,14 +14,16 @@ namespace CameraCaptureWPF.ViewModel
     public class MainViewModel : BaseViewModel
     {
         private readonly IList<VideoSource> list = new List<VideoSource>();
-        private FaceDetection _faceDetectionService;
-        private Bitmap _frame;
+        private FaceDetection faceDetectionService;
+        private VideoPlayingService videoPlayingService;
+        private Bitmap frame;
         private IDialogService dialog = new DialogService();
 
         private bool _isStreaming;
 
-        private ICommand _toggleWebServiceCommand;
-        private string _videoSourceEntry;
+        private ICommand toggleWebServiceCommand;
+        private ICommand toogleVideoOpen;
+        private string videoSourceEntry;
 
         /// <summary>
         ///     .ctor
@@ -41,11 +43,11 @@ namespace CameraCaptureWPF.ViewModel
 
         public string VideoSourceEntry
         {
-            get => _videoSourceEntry;
+            get => videoSourceEntry;
             set
             {
-                if (_videoSourceEntry == value) return;
-                _videoSourceEntry = value;
+                if (videoSourceEntry == value) return;
+                videoSourceEntry = value;
                 OnPropertyChanged("VideoSourceEntry");
             }
         }
@@ -68,15 +70,17 @@ namespace CameraCaptureWPF.ViewModel
         /// </summary>
         public Bitmap Frame
         {
-            get => _frame;
+            get => frame;
 
-            set => SetField(ref _frame, value);
+            set => SetField(ref frame, value);
         }
 
         /// <summary>
         ///     Property for webCam service
         /// </summary>
         public ICommand ToggleWebServiceCommand { get; }
+
+        public ICommand ToogleOpenVideoCommand { get; }
 
         private void FillComboBox()
         {
@@ -87,8 +91,15 @@ namespace CameraCaptureWPF.ViewModel
 
         private void InitializeServices()
         {
-            _faceDetectionService = new FaceDetection(true);
-            _faceDetectionService.ImageDetectionChanged += OnImageDetectionChanged;
+            faceDetectionService = new FaceDetection(true);
+            faceDetectionService.ImageDetectionChanged += OnImageDetectionChanged;
+            videoPlayingService = new VideoPlayingService();
+            videoPlayingService.VideoFramesChangeEvent += VideoPlayingServiceVideoFramesChangeEvent;
+        }
+
+        private void VideoPlayingServiceVideoFramesChangeEvent(object sender, Mat frame)
+        {
+            videoPlayingService.PlayVideo(dialog.FilePath);
         }
 
         private void OnImageDetectionChanged(object sender, Image<Bgr, byte> image)
@@ -101,8 +112,8 @@ namespace CameraCaptureWPF.ViewModel
         /// </summary>
         private void InitializeCommands()
         {
-            _toggleWebServiceCommand = new RelayCommand(ToggleWebServiceExecute);
-            //_togglePhotoShootServiceCommand = new RelayCommand(TogglePhotoShootServiceExecute);
+            toggleWebServiceCommand = new RelayCommand(ToggleWebServiceExecute);
+            toogleVideoOpen = new RelayCommand(ToogleOpenVideo);
             //_toogleHelpCallCommand = new RelayCommand(ToogleHelpServiceExecute);
         }
 
@@ -111,20 +122,24 @@ namespace CameraCaptureWPF.ViewModel
         /// </summary>
         private void ToggleWebServiceExecute()
         {
-            if (!_faceDetectionService.IsRunning)
+            if (!faceDetectionService.IsRunning)
             {
                 IsStreaming = true;
-                _faceDetectionService.RunServiceAsync();
+                faceDetectionService.RunServiceAsync();
             }
             else
             {
                 IsStreaming = false;
-                _faceDetectionService.CancelServiceAsync();
+                faceDetectionService.CancelServiceAsync();
             }
 
+        }
+
+        private void ToogleOpenVideo()
+        {
             if (dialog.OpenFileDialog())
             {
-                
+
             }
         }
     }
