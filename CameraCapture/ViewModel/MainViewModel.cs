@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using CameraCaptureWPF.Helpers;
@@ -14,6 +16,7 @@ namespace CameraCaptureWPF.ViewModel
         private readonly IList<VideoSource> list = new List<VideoSource>();
         private FaceDetection _faceDetectionService;
         private Bitmap _frame;
+        private IDialogService dialog = new DialogService();
 
         private bool _isStreaming;
 
@@ -117,6 +120,11 @@ namespace CameraCaptureWPF.ViewModel
             {
                 IsStreaming = false;
                 _faceDetectionService.CancelServiceAsync();
+            }
+
+            if (dialog.OpenFileDialog())
+            {
+                
             }
         }
     }
