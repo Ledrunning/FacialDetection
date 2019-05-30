@@ -24,10 +24,11 @@ namespace CameraCaptureWPF.Service
 
         private readonly string EyeHaarFileName = ApplicationConfiguration.EyeHaar;
         private readonly string FaceHaarFileName = ApplicationConfiguration.FaceHaar;
+        private bool isStarted;
 
         private (List<Rectangle> facesList, List<Rectangle> eyesList) detectedFaces;
 
-        public FaceDetection()
+        public FaceDetection(bool isStarted)
         {
             ImageChanged += WebCamImageChanged;
             detectedFaces.facesList = new List<Rectangle>();

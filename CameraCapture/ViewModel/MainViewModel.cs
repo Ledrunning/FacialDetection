@@ -4,18 +4,21 @@ using System.Windows.Data;
 using System.Windows.Input;
 using CameraCaptureWPF.Helpers;
 using CameraCaptureWPF.Service;
+using Emgu.CV;
+using Emgu.CV.Structure;
 
 namespace CameraCaptureWPF.ViewModel
 {
     public class MainViewModel : BaseViewModel
     {
-        private string _videoSourceEntry;
+        private readonly IList<VideoSource> list = new List<VideoSource>();
+        private FaceDetection _faceDetectionService;
         private Bitmap _frame;
-        FaceDetection _faceDetectionService;
 
         private bool _isStreaming;
 
-        private readonly IList<VideoSource> list = new List<VideoSource>();
+        private ICommand _toggleWebServiceCommand;
+        private string _videoSourceEntry;
 
         /// <summary>
         ///     .ctor
@@ -67,7 +70,6 @@ namespace CameraCaptureWPF.ViewModel
             set => SetField(ref _frame, value);
         }
 
-        private ICommand _toggleWebServiceCommand;
         /// <summary>
         ///     Property for webCam service
         /// </summary>
@@ -82,11 +84,11 @@ namespace CameraCaptureWPF.ViewModel
 
         private void InitializeServices()
         {
-            _faceDetectionService = new FaceDetection();
-            _faceDetectionService.ImageDetectionChanged += OnImageDetectionChanged; ;
+            _faceDetectionService = new FaceDetection(true);
+            _faceDetectionService.ImageDetectionChanged += OnImageDetectionChanged;
         }
 
-        private void OnImageDetectionChanged(object sender, Emgu.CV.Image<Emgu.CV.Structure.Bgr, byte> image)
+        private void OnImageDetectionChanged(object sender, Image<Bgr, byte> image)
         {
             Frame = image.Bitmap;
         }

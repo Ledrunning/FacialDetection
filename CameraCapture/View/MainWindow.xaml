@@ -40,7 +40,7 @@
 
         <StackPanel Grid.Column="3" Margin="0,48,0,0">
             <Label FontFamily="Arial">Выберите источник</Label>
-            <ComboBox x:Name="chooseInput" FontFamily="Arial"
+            <ComboBox FontFamily="Arial"
                       SelectionChanged="chooseInput_SelectionChanged"
                       ItemsSource="{Binding Path=Video}"
                       SelectedValue="{Binding Path=VideoSourceEntry}" />
