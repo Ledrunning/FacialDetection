@@ -3,7 +3,7 @@ using Emgu.CV.Structure;
 using System;
 using System.ComponentModel;
 
-namespace FaceDetector.Service
+namespace CameraCaptureWPF.Service
 {
     /// <summary>
     /// Class for camera call and async background works
@@ -16,21 +16,21 @@ namespace FaceDetector.Service
     /// </summary>
     public class WebCamService
     {
-        private VideoCapture _capture;
-        private BackgroundWorker _webCamWorker;
+        private VideoCapture capture;
+        private BackgroundWorker webCamWorker;
 
-        public event ImageChangedEventHndler ImageChanged;
+        public event ImageChangedEventHandler ImageChanged;
 
-        public delegate void ImageChangedEventHndler(object sender, Image<Bgr, Byte> image);
+        public delegate void ImageChangedEventHandler(object sender, Image<Bgr, Byte> image);
 
-        public bool IsRunning => _webCamWorker?.IsBusy ?? false;
+        public bool IsRunning => webCamWorker?.IsBusy ?? false;
 
         /// <summary>
         /// Async method for background work
         /// </summary>
         public void RunServiceAsync()
         {
-            _webCamWorker.RunWorkerAsync();
+            webCamWorker.RunWorkerAsync();
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace FaceDetector.Service
         /// </summary>
         public void CancelServiceAsync()
         {
-            _webCamWorker?.CancelAsync();
+            webCamWorker?.CancelAsync();
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace FaceDetector.Service
         /// </summary>
         public WebCamService()
         {
-            _capture = new VideoCapture();
+            capture = new VideoCapture();
             InitializeWorkers();
         }
 
@@ -65,10 +65,10 @@ namespace FaceDetector.Service
         /// </summary>
         private void InitializeWorkers()
         {
-            _webCamWorker = new BackgroundWorker();
-            _webCamWorker.WorkerSupportsCancellation = true;
-            _webCamWorker.DoWork += _webCamWorker_DoWork;
-            _webCamWorker.RunWorkerCompleted += _webCamWorker_RunWorkerCompleted;
+            webCamWorker = new BackgroundWorker();
+            webCamWorker.WorkerSupportsCancellation = true;
+            webCamWorker.DoWork += WbCamWorkerDoWork;
+            webCamWorker.RunWorkerCompleted += WebCamWorkerCompleted;
         }
 
         /// <summary>
@@ -76,16 +76,16 @@ namespace FaceDetector.Service
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void _webCamWorker_DoWork(object sender, DoWorkEventArgs e)
+        private void WbCamWorkerDoWork(object sender, DoWorkEventArgs e)
         {
-            while (!_webCamWorker.CancellationPending)
+            while (!webCamWorker.CancellationPending)
             {
                 // Or _capture.Retrieve(frame, 0)
-                RaiseImageChangedEvent(_capture.QueryFrame().ToImage<Bgr,Byte>());
+                RaiseImageChangedEvent(capture.QueryFrame().ToImage<Bgr,Byte>());
             }
         }
 
-        private void _webCamWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        private void WebCamWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
         }
     }

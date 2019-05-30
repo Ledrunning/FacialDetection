@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace FaceDetector.Helpers
+namespace CameraCaptureWPF.Helpers
 {
     public abstract class NotificationObject : INotifyPropertyChanged
     {

@@ -2,6 +2,8 @@
 using System.Drawing;
 using System.Windows.Data;
 using System.Windows.Input;
+using CameraCaptureWPF.Helpers;
+using CameraCaptureWPF.Service;
 
 namespace CameraCaptureWPF.ViewModel
 {
@@ -9,6 +11,7 @@ namespace CameraCaptureWPF.ViewModel
     {
         private string _videoSourceEntry;
         private Bitmap _frame;
+        FaceDetection _faceDetectionService;
 
         private bool _isStreaming;
 
@@ -64,6 +67,7 @@ namespace CameraCaptureWPF.ViewModel
             set => SetField(ref _frame, value);
         }
 
+        private ICommand _toggleWebServiceCommand;
         /// <summary>
         ///     Property for webCam service
         /// </summary>
@@ -78,9 +82,13 @@ namespace CameraCaptureWPF.ViewModel
 
         private void InitializeServices()
         {
-            //_faceDetectionService = new FaceDetectionService();
-            //_photoShootService = new PhotoShootService();
-            //_faceDetectionService.ImageWithDetectionChanged += _faceDetectionService_ImageChanged;
+            _faceDetectionService = new FaceDetection();
+            _faceDetectionService.ImageDetectionChanged += OnImageDetectionChanged; ;
+        }
+
+        private void OnImageDetectionChanged(object sender, Emgu.CV.Image<Emgu.CV.Structure.Bgr, byte> image)
+        {
+            Frame = image.Bitmap;
         }
 
         /// <summary>
@@ -88,7 +96,7 @@ namespace CameraCaptureWPF.ViewModel
         /// </summary>
         private void InitializeCommands()
         {
-            //_toggleWebServiceCommand = new RelayCommand<>(ToggleWebServiceExecute);
+            _toggleWebServiceCommand = new RelayCommand(ToggleWebServiceExecute);
             //_togglePhotoShootServiceCommand = new RelayCommand(TogglePhotoShootServiceExecute);
             //_toogleHelpCallCommand = new RelayCommand(ToogleHelpServiceExecute);
         }
@@ -98,16 +106,16 @@ namespace CameraCaptureWPF.ViewModel
         /// </summary>
         private void ToggleWebServiceExecute()
         {
-            //if (!_faceDetectionService.IsRunning)
-            //{
-            //    IsStreaming = true;
-            //    _faceDetectionService.RunServiceAsync();
-            //}
-            //else
-            //{
-            //    IsStreaming = false;
-            //    _faceDetectionService.CancelServiceAsync();
-            //}
+            if (!_faceDetectionService.IsRunning)
+            {
+                IsStreaming = true;
+                _faceDetectionService.RunServiceAsync();
+            }
+            else
+            {
+                IsStreaming = false;
+                _faceDetectionService.CancelServiceAsync();
+            }
         }
     }
 }

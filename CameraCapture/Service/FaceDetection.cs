@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Threading.Tasks;
+using System.Windows.Documents;
 using Emgu.CV;
 using Emgu.CV.Cuda;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
-using FaceDetector.Service;
+using Microsoft.WindowsAPICodePack.Shell.PropertySystem;
 
 #if !(__IOS__ || NETFX_CORE)
 
@@ -16,6 +19,57 @@ namespace CameraCaptureWPF.Service
 {
     public class FaceDetection : WebCamService
     {
+        public delegate void ImageChangedEventHandler(object sender, Image<Bgr, byte> image);
+        public event ImageChangedEventHandler ImageDetectionChanged;
+
+        private readonly string EyeHaarFileName = ApplicationConfiguration.EyeHaar;
+        private readonly string FaceHaarFileName = ApplicationConfiguration.FaceHaar;
+
+        private (List<Rectangle> facesList, List<Rectangle> eyesList) detectedFaces;
+
+        public FaceDetection()
+        {
+            ImageChanged += WebCamImageChanged;
+            detectedFaces.facesList = new List<Rectangle>();
+            detectedFaces.eyesList = new List<Rectangle>();
+        }
+
+        /// <summary>
+        /// todo need to check!
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="image"></param>
+        private async void WebCamImageChanged(object sender, Image<Bgr, byte> image)
+        {
+            await DetectFaceAndEyesAsync(image);
+
+            DrawRectangles(image);
+            ImageDetectionChanged?.Invoke(this, image);
+        }
+
+        private Task DetectFaceAndEyesAsync(Image<Bgr, byte> image)
+        {
+            var faces = new List<Rectangle>();
+            var eyes = new List<Rectangle>();
+            return Task.Run(() =>
+            {
+                DetectFaceAndEyes(image, FaceHaarFileName, EyeHaarFileName, faces, eyes, out var time);
+            });
+        }
+
+        private void DrawRectangles(Image<Bgr, byte> image)
+        {
+            foreach (var f in detectedFaces.facesList)
+            {
+                image.Draw(f, new Bgr(Color.Red), 3);
+                
+                foreach (var e in detectedFaces.eyesList)
+                {
+                    image.Draw(e, new Bgr(Color.Blue), 2);
+                }
+            }
+        }
+
         #region EmguDetector
 
         public void DetectFaceAndEyes(

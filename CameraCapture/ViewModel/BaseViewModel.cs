@@ -1,4 +1,4 @@
-﻿using FaceDetector.Helpers;
+﻿using CameraCaptureWPF.Helpers;
 
 namespace CameraCaptureWPF.ViewModel
 {

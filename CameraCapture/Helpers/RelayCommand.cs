@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace FaceDetector.Helpers
+namespace CameraCaptureWPF.Helpers
 {
     public class RelayCommand : ICommand
     {

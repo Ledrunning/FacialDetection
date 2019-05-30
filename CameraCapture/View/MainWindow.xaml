@@ -34,7 +34,7 @@
         </Menu>
 
         <StackPanel Margin="10,35,0,10" Grid.ColumnSpan="3" Grid.Column="0">
-            <Image Name="v_Image_Frame" Source="{Binding Frame, Converter={StaticResource BitmapSourceConvert}}"
+            <Image Source="{Binding Frame, Converter={StaticResource BitmapSourceConvert}}"
                    Stretch="Uniform" Margin="0,0,50,10" />
         </StackPanel>
 
