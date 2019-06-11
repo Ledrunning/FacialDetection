@@ -6,6 +6,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using CameraCaptureWPF.Helpers;
 using CameraCaptureWPF.Service;
+using CameraCaptureWPF.View;
 using Emgu.CV;
 using Emgu.CV.Structure;
 
@@ -23,6 +24,7 @@ namespace CameraCaptureWPF.ViewModel
 
         private ICommand toggleWebServiceCommand;
         private ICommand toogleVideoOpen;
+        private ICommand toogleAppClose;
         private string videoSourceEntry;
 
         /// <summary>
@@ -37,9 +39,9 @@ namespace CameraCaptureWPF.ViewModel
 
         public CollectionView Video { get; private set; }
 
-        public string OpenSource { get; } = "Открыть видео";
-        public string CloseSource { get; } = "Закрыть видио";
-        public string Exit { get; } = "Выход";
+        public string OpenSource { get; } = "Open video";
+        public string CloseSource { get; } = "Close video";
+        public string Exit { get; } = "Exit";
 
         public string VideoSourceEntry
         {
@@ -78,9 +80,11 @@ namespace CameraCaptureWPF.ViewModel
         /// <summary>
         ///     Property for webCam service
         /// </summary>
-        public ICommand ToggleWebServiceCommand { get; }
+        public ICommand ToggleWebServiceCommand { get => toggleWebServiceCommand; }
 
-        public ICommand ToogleOpenVideoCommand { get; }
+        public ICommand ToogleOpenVideoCommand { get => toogleVideoOpen; }
+
+        public ICommand ToogleCloseAppCommand { get => toogleAppClose; }
 
         private void FillComboBox()
         {
@@ -114,7 +118,7 @@ namespace CameraCaptureWPF.ViewModel
         {
             toggleWebServiceCommand = new RelayCommand(ToggleWebServiceExecute);
             toogleVideoOpen = new RelayCommand(ToogleOpenVideo);
-            //_toogleHelpCallCommand = new RelayCommand(ToogleHelpServiceExecute);
+            toogleAppClose = new RelayCommand(ToogleCloseApp);
         }
 
         /// <summary>
@@ -135,8 +139,15 @@ namespace CameraCaptureWPF.ViewModel
 
         }
 
+        private void ToogleCloseApp()
+        {
+
+        }
+
         private void ToogleOpenVideo()
         {
+            
+
             if (dialog.OpenFileDialog())
             {
 

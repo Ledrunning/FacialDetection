@@ -28,7 +28,7 @@
             <MenuItem Background="Transparent" Header="File" Height="21">
                 <MenuItem Background="Transparent" Header="{Binding Open Source}" Click="VideoOpen_Click" Command="{Binding ToogleOpenVideoCommand}" />
                 <MenuItem Background="Transparent" Header="{Binding Close Source}" Click="VideoClose_Click" />
-                <MenuItem Background="Transparent" Header="{Binding Exit}" Click="MenuItem_Click" />
+                <MenuItem Background="Transparent" Header="{Binding Exit}" Command="{Binding ToogleCloseAppCommand}" Click="MenuItem_Click" />
                 <Separator />
             </MenuItem>
         </Menu>
