@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Emgu.CV;
+using Microsoft.Win32;
+using System;
 using System.IO;
 using System.Threading;
 using System.Windows;
-using Emgu.CV;
-using Microsoft.Win32;
 
 namespace CameraCaptureWPF.View
 {
@@ -127,7 +127,7 @@ namespace CameraCaptureWPF.View
             if (capture != null && capture.Ptr != IntPtr.Zero)
             {
                 capture.Retrieve(frame, 0);
-               // Dispatcher.Invoke(new Action(() => imageBox.Source = BitmapSourceConvert.ToBitmapSource(_frame as IImage)));
+                // Dispatcher.Invoke(new Action(() => imageBox.Source = BitmapSourceConvert.ToBitmapSource(_frame as IImage)));
             }
         }
 
@@ -138,7 +138,7 @@ namespace CameraCaptureWPF.View
                 cap.Retrieve(frame, 0);
 
                 Thread.Sleep(Fps);
-               // Dispatcher.Invoke(new Action(() => imageBox.Source = BitmapSourceConvert.ToBitmapSource(_frame as IImage)));
+                // Dispatcher.Invoke(new Action(() => imageBox.Source = BitmapSourceConvert.ToBitmapSource(_frame as IImage)));
             }
         }
     }

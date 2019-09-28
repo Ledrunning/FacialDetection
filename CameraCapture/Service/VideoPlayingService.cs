@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Emgu.CV;
+using System;
 using System.Threading;
-using Emgu.CV;
 
 namespace CameraCaptureWPF.Service
 {

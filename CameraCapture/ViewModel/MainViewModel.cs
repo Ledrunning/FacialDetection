@@ -1,21 +1,17 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Windows;
-using System.Windows.Data;
-using System.Windows.Input;
-using CameraCaptureWPF.Helpers;
+﻿using CameraCaptureWPF.Helpers;
 using CameraCaptureWPF.Service;
-using CameraCaptureWPF.View;
 using Emgu.CV;
 using Emgu.CV.Structure;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Windows.Data;
+using System.Windows.Input;
 
 namespace CameraCaptureWPF.ViewModel
 {
     public class MainViewModel : BaseViewModel
     {
         private readonly IList<VideoSource> list = new List<VideoSource>();
-        private FaceDetection faceDetectionService;
         private VideoPlayingService videoPlayingService;
         private Bitmap frame;
         private IDialogService dialog = new DialogService();
@@ -80,11 +76,11 @@ namespace CameraCaptureWPF.ViewModel
         /// <summary>
         ///     Property for webCam service
         /// </summary>
-        public ICommand ToggleWebServiceCommand { get => toggleWebServiceCommand; }
+        public ICommand ToggleWebServiceCommand => toggleWebServiceCommand;
 
-        public ICommand ToogleOpenVideoCommand { get => toogleVideoOpen; }
+        public ICommand ToogleOpenVideoCommand => toogleVideoOpen;
 
-        public ICommand ToogleCloseAppCommand { get => toogleAppClose; }
+        public ICommand ToogleCloseAppCommand => toogleAppClose;
 
         private void FillComboBox()
         {
@@ -95,8 +91,6 @@ namespace CameraCaptureWPF.ViewModel
 
         private void InitializeServices()
         {
-            faceDetectionService = new FaceDetection(true);
-            faceDetectionService.ImageDetectionChanged += OnImageDetectionChanged;
             videoPlayingService = new VideoPlayingService();
             videoPlayingService.VideoFramesChangeEvent += VideoPlayingServiceVideoFramesChangeEvent;
         }
@@ -126,31 +120,16 @@ namespace CameraCaptureWPF.ViewModel
         /// </summary>
         private void ToggleWebServiceExecute()
         {
-            if (!faceDetectionService.IsRunning)
-            {
-                IsStreaming = true;
-                faceDetectionService.RunServiceAsync();
-            }
-            else
-            {
-                IsStreaming = false;
-                faceDetectionService.CancelServiceAsync();
-            }
-
         }
 
         private void ToogleCloseApp()
         {
-
         }
 
         private void ToogleOpenVideo()
         {
-            
-
             if (dialog.OpenFileDialog())
             {
-
             }
         }
     }
