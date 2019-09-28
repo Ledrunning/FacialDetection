@@ -9,20 +9,20 @@ namespace CameraCaptureWPF.Service
         public delegate void VideoFrameChanged(object sender, Mat frame);
 
         private const int Fps = 33; //(1000 / 30);
-        private readonly Mat _frame;
-        private VideoCapture _cap;
+        private readonly Mat frame;
+        private VideoCapture cap;
         private IDialogService dialog;
 
         public VideoPlayingService()
         {
-            _frame = new Mat();
+            frame = new Mat();
         }
 
         public void Dispose()
         {
-            _frame?.Dispose();
-            _cap?.Dispose();
-            _cap.ImageGrabbed -= ImageGrabbed;
+            frame?.Dispose();
+            cap?.Dispose();
+            cap.ImageGrabbed -= ImageGrabbed;
         }
 
         public event VideoFrameChanged VideoFramesChangeEvent;
@@ -31,9 +31,9 @@ namespace CameraCaptureWPF.Service
         {
             try
             {
-                _cap = new VideoCapture(filePath);
-                _cap.ImageGrabbed += ImageGrabbed;
-                _cap.Start();
+                cap = new VideoCapture(filePath);
+                cap.ImageGrabbed += ImageGrabbed;
+                cap.Start();
             }
             catch (Exception errmsg)
             {
@@ -55,12 +55,12 @@ namespace CameraCaptureWPF.Service
 
         private void ImageGrabbed(object sender, EventArgs e)
         {
-            if (_cap != null && _cap.Ptr != IntPtr.Zero)
+            if (cap != null && cap.Ptr != IntPtr.Zero)
             {
-                _cap.Retrieve(_frame, 0);
+                cap.Retrieve(frame, 0);
 
                 Thread.Sleep(Fps);
-                VideoFramesChangeEvent?.Invoke(sender, _frame);
+                VideoFramesChangeEvent?.Invoke(sender, frame);
             }
         }
     }
