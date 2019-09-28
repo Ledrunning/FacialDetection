@@ -12,13 +12,12 @@ namespace CameraCaptureWPF.View
     /// </summary>
     public partial class MainWindow : Window
     {
-        private VideoCapture _capture;
-        private VideoCapture _cap;
-        private bool _captureInProgress;
-        private bool _capturingFlag;
-        private readonly Mat _frame;
+        private VideoCapture capture;
+        private VideoCapture cap;
+        private bool captureInProgress;
+        private bool capturingFlag;
+        private readonly Mat frame;
         private const int Fps = 33; //(1000 / 30);
-        private CascadeClassifier _haar;
 
         public MainWindow()
         {
@@ -42,34 +41,34 @@ namespace CameraCaptureWPF.View
             //_frame = new Mat();
         }
 
-        private void captureButton_Click(object sender, RoutedEventArgs e)
+        private void CaptureButtonOnClick(object sender, RoutedEventArgs e)
         {
-            if (_capture != null && _capturingFlag)
+            if (capture != null && capturingFlag)
             {
-                if (_captureInProgress)
+                if (captureInProgress)
                 {
                     //stop the capture
                     //captureButton.Content = "Старт";
-                    _capture.Stop();
+                    capture.Stop();
                 }
                 else
                 {
                     //start the capture
                     //captureButton.Content = "Стоп";
 
-                    _capture.Start();
+                    capture.Start();
                 }
 
-                _captureInProgress = !_captureInProgress;
+                captureInProgress = !captureInProgress;
             }
         }
 
         private void FreeVideoCapture()
         {
-            _capture?.Dispose();
+            capture?.Dispose();
         }
 
-        private void VideoOpen_Click(object sender, RoutedEventArgs e)
+        private void VideoOpenOnClick(object sender, RoutedEventArgs e)
         {
             OpenFile();
         }
@@ -85,9 +84,9 @@ namespace CameraCaptureWPF.View
             {
                 try
                 {
-                    _cap = new VideoCapture(openFile.FileName);
-                    _cap.ImageGrabbed += VideoFrames;
-                    _cap.Start();
+                    cap = new VideoCapture(openFile.FileName);
+                    cap.ImageGrabbed += VideoFrames;
+                    cap.Start();
                 }
                 catch (FileFormatException errmsg)
                 {
@@ -97,18 +96,18 @@ namespace CameraCaptureWPF.View
             }
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private void MenuItemOnClick(object sender, RoutedEventArgs e)
         {
             FreeVideoCapture();
             this.Close();
         }
 
-        private void VideoClose_Click(object sender, RoutedEventArgs e)
+        private void VideoCloseOnClick(object sender, RoutedEventArgs e)
         {
             FreeVideoCapture();
         }
 
-        private void chooseInput_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void InputStreamOnSelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             //if ((string)chooseInput.SelectedItem == _cmbItems[0])
             //{
@@ -125,18 +124,18 @@ namespace CameraCaptureWPF.View
 
         private void ProcessFrame(object sender, EventArgs arg)
         {
-            if (_capture != null && _capture.Ptr != IntPtr.Zero)
+            if (capture != null && capture.Ptr != IntPtr.Zero)
             {
-                _capture.Retrieve(_frame, 0);
+                capture.Retrieve(frame, 0);
                // Dispatcher.Invoke(new Action(() => imageBox.Source = BitmapSourceConvert.ToBitmapSource(_frame as IImage)));
             }
         }
 
         private void VideoFrames(object sender, EventArgs e)
         {
-            if (_cap != null && _cap.Ptr != IntPtr.Zero)
+            if (cap != null && cap.Ptr != IntPtr.Zero)
             {
-                _cap.Retrieve(_frame, 0);
+                cap.Retrieve(frame, 0);
 
                 Thread.Sleep(Fps);
                // Dispatcher.Invoke(new Action(() => imageBox.Source = BitmapSourceConvert.ToBitmapSource(_frame as IImage)));
