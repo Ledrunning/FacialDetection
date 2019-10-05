@@ -181,7 +181,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="IDialogService.cs" />
-    <Compile Include="Service\FaceDetection.cs" />
     <Compile Include="Service\VideoPlayingService.cs" />
     <Compile Include="Service\WebCamService.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
@@ -222,27 +221,11 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Haar\haarcascade_eye.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Haar\haarcascade_frontalface_default.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="libs\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="cvextern.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Resource Include="haarcascade_frontalface_default.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="haarcascade_eye.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
     <Content Include="msvcp120.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

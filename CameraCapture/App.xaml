@@ -25,7 +25,6 @@
                 <!-- Office2013 Theme -->
                 <!--<ResourceDictionary Source="Themes/Office2013/Office2013.MSControls.Core.Implicit.xaml" />
                 <ResourceDictionary Source="Themes/Office2013/Office2013.MSControls.Toolkit.Implicit.xaml" /> -->
-
             </ResourceDictionary.MergedDictionaries>
 
             <!-- <SolidColorBrush x:Key="BackgroundKey" Color="#FFFFFF" /> Color="#FF181818" -->
@@ -44,7 +43,6 @@
                 <Setter Property="FontFamily" Value="Segoe UI" />
                 <Setter Property="Foreground" Value="#FF00AADE" />
             </Style>
-
         </ResourceDictionary>
     </Application.Resources>
 </Application>

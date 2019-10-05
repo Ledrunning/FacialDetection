@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:emui="clr-namespace:Emgu.CV.UI;assembly=Emgu.CV.UI"
         xmlns:converters="clr-namespace:CameraCaptureWPF.Converters"
         xmlns:viewModel="clr-namespace:CameraCaptureWPF.ViewModel"
         mc:Ignorable="d"
@@ -15,7 +14,6 @@
         <converters:BitmapSourceConvert x:Key="BitmapSourceConvert" />
     </Window.Resources>
 
-
     <Grid DataContext="{StaticResource MainViewModel}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="133*" />
@@ -26,9 +24,9 @@
 
         <Menu Background="Transparent" Margin="0,0,206.579,534" Grid.ColumnSpan="2">
             <MenuItem Background="Transparent" Header="File" Height="21">
-                <MenuItem Background="Transparent" Header="{Binding Open Source}" Click="VideoOpen_Click" Command="{Binding ToogleOpenVideoCommand}" />
-                <MenuItem Background="Transparent" Header="{Binding Close Source}" Click="VideoClose_Click" />
-                <MenuItem Background="Transparent" Header="{Binding Exit}" Click="MenuItem_Click" />
+                <MenuItem Background="Transparent" Header="{Binding Open Source}" Click="VideoOpenOnClick" Command="{Binding ToogleOpenVideoCommand}" />
+                <MenuItem Background="Transparent" Header="{Binding Close Source}" Click="VideoCloseOnClick" />
+                <MenuItem Background="Transparent" Header="{Binding Exit}" Command="{Binding ToogleCloseAppCommand}" Click="MenuItemOnClick" />
                 <Separator />
             </MenuItem>
         </Menu>
@@ -41,12 +39,12 @@
         <StackPanel Grid.Column="3" Margin="0,48,0,0">
             <Label FontFamily="Arial">Выберите источник</Label>
             <ComboBox FontFamily="Arial"
-                      SelectionChanged="chooseInput_SelectionChanged"
+                      SelectionChanged="InputStreamOnSelectionChanged"
                       ItemsSource="{Binding Path=Video}"
                       SelectedValue="{Binding Path=VideoSourceEntry}" />
         </StackPanel>
         <StackPanel Grid.Column="3" Margin="0,200,0,300">
-            <Button x:Name="captureButton" Content="Старт" Click="captureButton_Click"
+            <Button x:Name="captureButton" Content="Старт" Click="CaptureButtonOnClick"
                     Background="Transparent" BorderThickness="4" BorderBrush="Gray" FontFamily="Arial"
                     RenderTransformOrigin="0.533,-0.017" Height="26" />
         </StackPanel>

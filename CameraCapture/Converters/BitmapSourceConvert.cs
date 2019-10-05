@@ -4,12 +4,8 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
-using System.Runtime.InteropServices;
-using System.Windows;
 using System.Windows.Data;
-using System.Windows.Interop;
 using System.Windows.Media.Imaging;
-using Emgu.CV;
 
 namespace CameraCaptureWPF.Converters
 {
@@ -23,7 +19,7 @@ namespace CameraCaptureWPF.Converters
             {
                 try
                 {
-                    ((Bitmap) value).Save(ms, ImageFormat.Bmp);
+                    ((Bitmap)value).Save(ms, ImageFormat.Bmp);
                     var image = new BitmapImage();
                     image.BeginInit();
                     ms.Seek(0, SeekOrigin.Begin);
@@ -31,7 +27,6 @@ namespace CameraCaptureWPF.Converters
                     image.EndInit();
                     return image;
                 }
-
                 catch (Exception e)
                 {
                     Debug.WriteLine(e);

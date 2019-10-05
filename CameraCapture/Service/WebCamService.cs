@@ -1,7 +1,7 @@
-﻿using System;
-using System.ComponentModel;
-using Emgu.CV;
+﻿using Emgu.CV;
 using Emgu.CV.Structure;
+using System;
+using System.ComponentModel;
 
 namespace CameraCaptureWPF.Service
 {
