@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Background="{StaticResource BackgroundKey}"
-        Title="Face Detector" TextBlock.TextAlignment="Center" MinWidth="200" Height="600" Width="800">
+        Title="Image Capture" TextBlock.TextAlignment="Center" MinWidth="200" Height="600" Width="800">
     <Window.Resources>
         <viewModel:MainViewModel x:Key="MainViewModel" />
         <converters:BitmapSourceConvert x:Key="BitmapSourceConvert" />
@@ -46,7 +46,7 @@
         <StackPanel Grid.Column="3" Margin="0,200,0,300">
             <Button x:Name="captureButton" Content="Старт" Click="CaptureButtonOnClick"
                     Background="Transparent" BorderThickness="4" BorderBrush="Gray" FontFamily="Arial"
-                    RenderTransformOrigin="0.533,-0.017" Height="26" />
+                    RenderTransformOrigin="0.533,-0.017" Height="26" Command="{Binding ToggleWebServiceCommand}"/>
         </StackPanel>
     </Grid>
 </Window>

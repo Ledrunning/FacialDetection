@@ -1,7 +1,8 @@
-﻿using Emgu.CV;
-using Emgu.CV.Structure;
-using System;
+﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
+using Emgu.CV;
+using Emgu.CV.Structure;
 
 namespace CameraCaptureWPF.Service
 {
@@ -33,12 +34,15 @@ namespace CameraCaptureWPF.Service
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Debug.WriteLine(e);
             }
 
             InitializeWorkers();
         }
 
+        /// <summary>
+        ///     Flag when service is running
+        /// </summary>
         public bool IsRunning => webCamWorker?.IsBusy ?? false;
 
         public event ImageChangedEventHandler ImageChanged;

@@ -15,13 +15,17 @@ namespace CameraCaptureWPF.ViewModel
         private VideoPlayingService videoPlayingService;
         private Bitmap frame;
         private IDialogService dialog = new DialogService();
+        WebCamService webCamService = new WebCamService();
 
-        private bool _isStreaming;
+        private bool isStreaming;
 
         private ICommand toggleWebServiceCommand;
         private ICommand toogleVideoOpen;
         private ICommand toogleAppClose;
         private string videoSourceEntry;
+
+        public delegate void ImageWithDetectionChangedEventHandler(object sender, Image<Bgr, byte> image);
+        public event ImageWithDetectionChangedEventHandler ImageWithDetectionChanged;
 
         /// <summary>
         ///     .ctor
@@ -31,6 +35,22 @@ namespace CameraCaptureWPF.ViewModel
             InitializeServices();
             InitializeCommands();
             FillComboBox();
+        }
+
+        private void InitializeWebCamService()
+        {
+            webCamService.ImageChanged += WebCamServiceOnImageChanged; ;
+        }
+
+        private void RaiseImageWithDetectionChangedEvent(Image<Bgr, byte> image)
+        {
+            ImageWithDetectionChanged?.Invoke(this, image);
+        }
+
+        private void WebCamServiceOnImageChanged(object sender, Image<Bgr, byte> image)
+        {
+            //RaiseImageWithDetectionChangedEvent(image);
+            Frame = image.Bitmap;
         }
 
         public CollectionView Video { get; private set; }
@@ -55,10 +75,10 @@ namespace CameraCaptureWPF.ViewModel
         /// </summary>
         public bool IsStreaming
         {
-            get => _isStreaming;
+            get => isStreaming;
             set
             {
-                _isStreaming = value;
+                isStreaming = value;
                 OnPropertyChanged();
             }
         }
@@ -93,6 +113,7 @@ namespace CameraCaptureWPF.ViewModel
         {
             videoPlayingService = new VideoPlayingService();
             videoPlayingService.VideoFramesChangeEvent += VideoPlayingServiceVideoFramesChangeEvent;
+            InitializeWebCamService();
         }
 
         private void VideoPlayingServiceVideoFramesChangeEvent(object sender, Mat frame)
@@ -120,6 +141,16 @@ namespace CameraCaptureWPF.ViewModel
         /// </summary>
         private void ToggleWebServiceExecute()
         {
+            if (!webCamService.IsRunning)
+            {
+                IsStreaming = true;
+                webCamService.RunServiceAsync();
+            }
+            else
+            {
+                IsStreaming = false;
+                webCamService.CancelServiceAsync();
+            }
         }
 
         private void ToogleCloseApp()
