@@ -24,8 +24,8 @@
 
         <Menu Background="Transparent" Margin="0,0,206.579,534" Grid.ColumnSpan="2">
             <MenuItem Background="Transparent" Header="File" Height="21">
-                <MenuItem Background="Transparent" Header="{Binding Open Source}" Click="VideoOpenOnClick" Command="{Binding ToogleOpenVideoCommand}" />
-                <MenuItem Background="Transparent" Header="{Binding Close Source}" Click="VideoCloseOnClick" />
+                <MenuItem Background="Transparent" Header="{Binding OpenSource}" Click="VideoOpenOnClick" Command="{Binding ToogleOpenVideoCommand}" />
+                <MenuItem Background="Transparent" Header="{Binding CloseSource}" Click="VideoCloseOnClick" />
                 <MenuItem Background="Transparent" Header="{Binding Exit}" Command="{Binding ToogleCloseAppCommand}" Click="MenuItemOnClick" />
                 <Separator />
             </MenuItem>
@@ -37,16 +37,18 @@
         </StackPanel>
 
         <StackPanel Grid.Column="3" Margin="0,48,0,0">
-            <Label FontFamily="Arial">Выберите источник</Label>
+            <Label FontFamily="Arial" Content="{Binding SelectSource}"></Label>
             <ComboBox FontFamily="Arial"
                       SelectionChanged="InputStreamOnSelectionChanged"
                       ItemsSource="{Binding Path=Video}"
                       SelectedValue="{Binding Path=VideoSourceEntry}" />
         </StackPanel>
         <StackPanel Grid.Column="3" Margin="0,200,0,300">
-            <Button x:Name="captureButton" Content="Старт" Click="CaptureButtonOnClick"
-                    Background="Transparent" BorderThickness="4" BorderBrush="Gray" FontFamily="Arial"
-                    RenderTransformOrigin="0.533,-0.017" Height="26" Command="{Binding ToggleWebServiceCommand}"/>
+            <Button Background="Transparent" FontFamily="Arial"
+                    RenderTransformOrigin="0.533,-0.017" Height="26" 
+                    Command="{Binding ToggleWebServiceCommand}"
+                    Content="{Binding ButtonContent}">
+            </Button>
         </StackPanel>
     </Grid>
 </Window>
