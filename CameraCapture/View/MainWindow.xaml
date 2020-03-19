@@ -10,11 +10,10 @@
         Background="{StaticResource BackgroundKey}"
         Title="Image Capture" TextBlock.TextAlignment="Center" MinWidth="200" Height="600" Width="800">
     <Window.Resources>
-        <viewModel:MainViewModel x:Key="MainViewModel" />
         <converters:BitmapSourceConvert x:Key="BitmapSourceConvert" />
     </Window.Resources>
 
-    <Grid DataContext="{StaticResource MainViewModel}">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="133*" />
             <ColumnDefinition Width="272*" />
@@ -41,7 +40,7 @@
             <ComboBox FontFamily="Arial"
                       SelectionChanged="InputStreamOnSelectionChanged"
                       ItemsSource="{Binding Path=Video}"
-                      SelectedValue="{Binding Path=VideoSourceEntry}" />
+                      SelectedValue="{Binding Path=SelectedVideoSource}" />
         </StackPanel>
         <StackPanel Grid.Column="3" Margin="0,200,0,300">
             <Button Background="Transparent" FontFamily="Arial"

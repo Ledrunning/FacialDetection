@@ -119,7 +119,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ApplicationConfiguration.cs" />
     <Compile Include="Converters\BitmapSourceConvert.cs" />
     <Compile Include="Helpers\DialogService.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />

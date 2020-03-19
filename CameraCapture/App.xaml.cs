@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace FaceDetector
+namespace CameraCaptureWPF
 {
     /// <summary>
     /// Логика взаимодействия для App.xaml
