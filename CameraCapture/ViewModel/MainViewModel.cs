@@ -15,8 +15,7 @@ namespace CameraCaptureWPF.ViewModel
         public delegate void ImageWithDetectionChangedEventHandler(object sender, Image<Bgr, byte> image);
 
         private readonly IDialogService dialog = new DialogService();
-
-        private readonly IList<VideoSource> list = new List<VideoSource>();
+                private readonly IList<VideoSource> sourceList = new List<VideoSource>();
         private readonly WebCamService webCamService = new WebCamService();
         private string buttonContent = "Start";
         private Bitmap frame;
@@ -122,9 +121,9 @@ namespace CameraCaptureWPF.ViewModel
 
         private void FillComboBox()
         {
-            list.Add(new VideoSource("Video"));
-            list.Add(new VideoSource("Camera capture"));
-            Video = new CollectionView(list);
+            sourceList.Add(new VideoSource("Video"));
+            sourceList.Add(new VideoSource("Camera capture"));
+            Video = new CollectionView(sourceList);
         }
 
         private void InitializeServices()
@@ -159,17 +158,20 @@ namespace CameraCaptureWPF.ViewModel
         /// </summary>
         private void ToggleWebServiceExecute()
         {
-            if (!webCamService.IsRunning)
+            if (SelectedVideoSource == sourceList[1].Name)
             {
-                IsStreaming = true;
-                ButtonContent = "Stop";
-                webCamService.RunServiceAsync();
-            }
-            else
-            {
-                IsStreaming = false;
-                ButtonContent = "Start";
-                webCamService.CancelServiceAsync();
+                if (!webCamService.IsRunning)
+                {
+                    IsStreaming = true;
+                    ButtonContent = "Stop";
+                    webCamService.RunServiceAsync();
+                }
+                else
+                {
+                    IsStreaming = false;
+                    ButtonContent = "Start";
+                    webCamService.CancelServiceAsync();
+                }
             }
         }
 
@@ -186,6 +188,7 @@ namespace CameraCaptureWPF.ViewModel
         {
             if (dialog.OpenFileDialog())
             {
+
             }
         }
     }
