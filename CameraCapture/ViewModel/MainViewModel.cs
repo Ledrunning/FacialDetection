@@ -15,7 +15,7 @@ namespace CameraCaptureWPF.ViewModel
         public delegate void ImageWithDetectionChangedEventHandler(object sender, Image<Bgr, byte> image);
 
         private readonly IDialogService dialog = new DialogService();
-                private readonly IList<VideoSource> sourceList = new List<VideoSource>();
+        private readonly IList<VideoSource> sourceList = new List<VideoSource>();
         private readonly WebCamService webCamService = new WebCamService();
         private string buttonContent = "Start";
         private Bitmap frame;
@@ -135,12 +135,7 @@ namespace CameraCaptureWPF.ViewModel
 
         private void VideoPlayingServiceVideoFramesChangeEvent(object sender, Mat frame)
         {
-            videoPlayingService.PlayVideo(dialog.FilePath);
-        }
-
-        private void OnImageDetectionChanged(object sender, Image<Bgr, byte> image)
-        {
-            Frame = image.Bitmap;
+            Frame = frame.Bitmap;
         }
 
         /// <summary>
@@ -171,7 +166,43 @@ namespace CameraCaptureWPF.ViewModel
                     IsStreaming = false;
                     ButtonContent = "Start";
                     webCamService.CancelServiceAsync();
+                    ClearFrame();
                 }
+            }
+            else if (SelectedVideoSource == sourceList[0].Name)
+            {
+                if (!videoPlayingService.IsPlaying)
+                {
+                    IsStreaming = true;
+                    ButtonContent = "Stop";
+                    ToogleOpenVideo();
+                }
+                else
+                {
+                    IsStreaming = false;
+                    ButtonContent = "Start";
+                    videoPlayingService.VideoFramesChangeEvent -= VideoPlayingServiceVideoFramesChangeEvent;
+                    videoPlayingService.Dispose();
+                    videoPlayingService.StopPlaying();
+
+                    ClearFrame();
+                }
+            }
+        }
+
+        private void ClearFrame()
+        {
+            if (Frame != null)
+            {
+                Frame = null;
+            }
+        }
+
+        private void ToogleOpenVideo()
+        {
+            if (dialog.OpenFileDialog())
+            {
+                videoPlayingService.PlayVideo(dialog.FilePath);
             }
         }
 
@@ -181,14 +212,6 @@ namespace CameraCaptureWPF.ViewModel
             if (webCamService != null)
             {
                 webCamService.Dispose();
-            }
-        }
-
-        private void ToogleOpenVideo()
-        {
-            if (dialog.OpenFileDialog())
-            {
-
             }
         }
     }

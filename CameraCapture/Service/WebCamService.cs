@@ -19,7 +19,7 @@ namespace CameraCaptureWPF.Service
     {
         public delegate void ImageChangedEventHandler(object sender, Image<Bgr, byte> image);
 
-        private readonly VideoCapture capture;
+        private VideoCapture capture;
         private BackgroundWorker webCamWorker;
 
         /// <summary>
@@ -28,16 +28,32 @@ namespace CameraCaptureWPF.Service
         /// </summary>
         public WebCamService()
         {
-            try
-            {
-                capture = new VideoCapture();
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e);
-            }
-
             InitializeWorkers();
+        }
+
+        private VideoCapture Capture
+        {
+            get
+            {
+                try
+                {
+                    if (capture == null)
+                    {
+                        capture = new VideoCapture();
+                    }
+
+                    if (!capture.IsOpened)
+                    {
+                        capture.Start();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e);
+                }
+
+                return capture;
+            }
         }
 
         /// <summary>
@@ -49,8 +65,13 @@ namespace CameraCaptureWPF.Service
         {
             webCamWorker.DoWork -= WbCamWorkerDoWork;
             webCamWorker.RunWorkerCompleted -= WebCamWorkerCompleted;
-            capture?.Dispose();
+            Capture?.Dispose();
             webCamWorker?.Dispose();
+        }
+
+        public void StopWebCamCapture()
+        {
+            Capture.Stop();
         }
 
         public event ImageChangedEventHandler ImageChanged;
@@ -101,7 +122,7 @@ namespace CameraCaptureWPF.Service
             while (!webCamWorker.CancellationPending)
                 // Or _capture.Retrieve(frame, 0)
             {
-                RaiseImageChangedEvent(capture.QueryFrame().ToImage<Bgr, byte>());
+                RaiseImageChangedEvent(Capture.QueryFrame().ToImage<Bgr, byte>());
             }
         }
 
