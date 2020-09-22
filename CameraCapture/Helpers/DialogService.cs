@@ -11,7 +11,7 @@ namespace CameraCaptureWPF.Helpers
         {
             var openFileDialog = new OpenFileDialog();
             openFileDialog.InitialDirectory = "c:\\";
-            openFileDialog.Filter = "Video Files |*.mp4|*.avi";
+            openFileDialog.Filter = "Video Files |*.mp4|*.avi|";
             openFileDialog.RestoreDirectory = true;
 
             if (openFileDialog.ShowDialog() == true)

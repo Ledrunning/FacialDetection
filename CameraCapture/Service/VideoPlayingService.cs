@@ -1,6 +1,6 @@
-﻿using Emgu.CV;
-using System;
+﻿using System;
 using System.Threading;
+using Emgu.CV;
 
 namespace CameraCaptureWPF.Service
 {
@@ -9,20 +9,29 @@ namespace CameraCaptureWPF.Service
         public delegate void VideoFrameChanged(object sender, Mat frame);
 
         private const int Fps = 33; //(1000 / 30);
-        private readonly Mat frame;
-        private VideoCapture cap;
+        private VideoCapture capture;
         private IDialogService dialog;
+        private Mat frame;
 
         public VideoPlayingService()
         {
             frame = new Mat();
         }
 
+        public bool IsPlaying { get; private set; }
+
         public void Dispose()
         {
+            if (capture != null)
+            {
+                capture.Stop();
+                capture.ImageGrabbed -= ImageGrabbed;
+                capture?.Dispose();
+                capture = null;
+            }
+
             frame?.Dispose();
-            cap?.Dispose();
-            cap.ImageGrabbed -= ImageGrabbed;
+            frame = null;
         }
 
         public event VideoFrameChanged VideoFramesChangeEvent;
@@ -31,13 +40,14 @@ namespace CameraCaptureWPF.Service
         {
             try
             {
-                cap = new VideoCapture(filePath);
-                cap.ImageGrabbed += ImageGrabbed;
-                cap.Start();
+                capture = new VideoCapture(filePath);
+                capture.ImageGrabbed += ImageGrabbed;
+                capture.Start();
+                IsPlaying = true;
             }
-            catch (Exception errmsg)
+            catch (Exception e)
             {
-                dialog.ShowMessage(errmsg.Message);
+                dialog.ShowMessage(e.Message);
             }
         }
 
@@ -46,6 +56,7 @@ namespace CameraCaptureWPF.Service
             try
             {
                 Dispose();
+                IsPlaying = false;
             }
             catch (Exception e)
             {
@@ -55,9 +66,14 @@ namespace CameraCaptureWPF.Service
 
         private void ImageGrabbed(object sender, EventArgs e)
         {
-            if (cap != null && cap.Ptr != IntPtr.Zero)
+            if (frame == null)
             {
-                cap.Retrieve(frame, 0);
+                frame = new Mat();
+            }
+
+            if (capture != null && capture.Ptr != IntPtr.Zero)
+            {
+                capture.Retrieve(frame);
 
                 Thread.Sleep(Fps);
                 VideoFramesChangeEvent?.Invoke(sender, frame);

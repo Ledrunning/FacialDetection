@@ -1,52 +1,71 @@
-﻿using CameraCaptureWPF.Helpers;
-using CameraCaptureWPF.Service;
-using Emgu.CV;
-using Emgu.CV.Structure;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Data;
 using System.Windows.Input;
+using CameraCaptureWPF.Helpers;
+using CameraCaptureWPF.Service;
+using Emgu.CV;
+using Emgu.CV.Structure;
 
 namespace CameraCaptureWPF.ViewModel
 {
     public class MainViewModel : BaseViewModel
     {
-        private readonly IList<VideoSource> list = new List<VideoSource>();
-        private VideoPlayingService videoPlayingService;
+        public delegate void ImageWithDetectionChangedEventHandler(object sender, Image<Bgr, byte> image);
+
+        private readonly IDialogService dialog = new DialogService();
+        private readonly IList<VideoSource> sourceList = new List<VideoSource>();
+        private readonly WebCamService webCamService = new WebCamService();
+        private string buttonContent = "Start";
         private Bitmap frame;
-        private IDialogService dialog = new DialogService();
 
-        private bool _isStreaming;
+        private bool isStreaming;
+        private string selectedVideoSource;
 
-        private ICommand toggleWebServiceCommand;
-        private ICommand toogleVideoOpen;
-        private ICommand toogleAppClose;
-        private string videoSourceEntry;
+        private VideoPlayingService videoPlayingService;
 
         /// <summary>
         ///     .ctor
         /// </summary>
-        public MainViewModel()
+        public MainViewModel(Action methodAction)
         {
             InitializeServices();
             InitializeCommands();
             FillComboBox();
+            CloseAction = methodAction;
         }
 
         public CollectionView Video { get; private set; }
-
+        public Action CloseAction { get; set; }
         public string OpenSource { get; } = "Open video";
         public string CloseSource { get; } = "Close video";
         public string Exit { get; } = "Exit";
 
-        public string VideoSourceEntry
+        public string SelectSource { get; set; } = "Select source";
+
+        public string ButtonContent
         {
-            get => videoSourceEntry;
+            get => buttonContent;
             set
             {
-                if (videoSourceEntry == value) return;
-                videoSourceEntry = value;
-                OnPropertyChanged("VideoSourceEntry");
+                buttonContent = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string SelectedVideoSource
+        {
+            get => selectedVideoSource;
+            set
+            {
+                if (selectedVideoSource == value)
+                {
+                    return;
+                }
+
+                selectedVideoSource = value;
+                OnPropertyChanged();
             }
         }
 
@@ -55,10 +74,10 @@ namespace CameraCaptureWPF.ViewModel
         /// </summary>
         public bool IsStreaming
         {
-            get => _isStreaming;
+            get => isStreaming;
             set
             {
-                _isStreaming = value;
+                isStreaming = value;
                 OnPropertyChanged();
             }
         }
@@ -76,33 +95,47 @@ namespace CameraCaptureWPF.ViewModel
         /// <summary>
         ///     Property for webCam service
         /// </summary>
-        public ICommand ToggleWebServiceCommand => toggleWebServiceCommand;
+        public ICommand ToggleWebServiceCommand { get; private set; }
 
-        public ICommand ToogleOpenVideoCommand => toogleVideoOpen;
+        public ICommand ToogleOpenVideoCommand { get; private set; }
 
-        public ICommand ToogleCloseAppCommand => toogleAppClose;
+        public ICommand ToogleCloseAppCommand { get; private set; }
+
+        public event ImageWithDetectionChangedEventHandler ImageWithDetectionChanged;
+
+        private void InitializeWebCamService()
+        {
+            webCamService.ImageChanged += WebCamServiceOnImageChanged;
+        }
+
+        private void RaiseImageWithDetectionChangedEvent(Image<Bgr, byte> image)
+        {
+            ImageWithDetectionChanged?.Invoke(this, image);
+        }
+
+        private void WebCamServiceOnImageChanged(object sender, Image<Bgr, byte> image)
+        {
+            //RaiseImageWithDetectionChangedEvent(image);
+            Frame = image.Bitmap;
+        }
 
         private void FillComboBox()
         {
-            list.Add(new VideoSource("Видео"));
-            list.Add(new VideoSource("Захват камеры"));
-            Video = new CollectionView(list);
+            sourceList.Add(new VideoSource("Video"));
+            sourceList.Add(new VideoSource("Camera capture"));
+            Video = new CollectionView(sourceList);
         }
 
         private void InitializeServices()
         {
             videoPlayingService = new VideoPlayingService();
             videoPlayingService.VideoFramesChangeEvent += VideoPlayingServiceVideoFramesChangeEvent;
+            InitializeWebCamService();
         }
 
         private void VideoPlayingServiceVideoFramesChangeEvent(object sender, Mat frame)
         {
-            videoPlayingService.PlayVideo(dialog.FilePath);
-        }
-
-        private void OnImageDetectionChanged(object sender, Image<Bgr, byte> image)
-        {
-            Frame = image.Bitmap;
+            Frame = frame.Bitmap;
         }
 
         /// <summary>
@@ -110,9 +143,9 @@ namespace CameraCaptureWPF.ViewModel
         /// </summary>
         private void InitializeCommands()
         {
-            toggleWebServiceCommand = new RelayCommand(ToggleWebServiceExecute);
-            toogleVideoOpen = new RelayCommand(ToogleOpenVideo);
-            toogleAppClose = new RelayCommand(ToogleCloseApp);
+            ToggleWebServiceCommand = new RelayCommand(ToggleWebServiceExecute);
+            ToogleOpenVideoCommand = new RelayCommand(ToogleOpenVideo);
+            ToogleCloseAppCommand = new RelayCommand(ToogleCloseApp);
         }
 
         /// <summary>
@@ -120,16 +153,65 @@ namespace CameraCaptureWPF.ViewModel
         /// </summary>
         private void ToggleWebServiceExecute()
         {
+            if (SelectedVideoSource == sourceList[1].Name)
+            {
+                if (!webCamService.IsRunning)
+                {
+                    IsStreaming = true;
+                    ButtonContent = "Stop";
+                    webCamService.RunServiceAsync();
+                }
+                else
+                {
+                    IsStreaming = false;
+                    ButtonContent = "Start";
+                    webCamService.CancelServiceAsync();
+                    ClearFrame();
+                }
+            }
+            else if (SelectedVideoSource == sourceList[0].Name)
+            {
+                if (!videoPlayingService.IsPlaying)
+                {
+                    IsStreaming = true;
+                    ButtonContent = "Stop";
+                    ToogleOpenVideo();
+                }
+                else
+                {
+                    IsStreaming = false;
+                    ButtonContent = "Start";
+                    videoPlayingService.VideoFramesChangeEvent -= VideoPlayingServiceVideoFramesChangeEvent;
+                    videoPlayingService.Dispose();
+                    videoPlayingService.StopPlaying();
+
+                    ClearFrame();
+                }
+            }
         }
 
-        private void ToogleCloseApp()
+        private void ClearFrame()
         {
+            if (Frame != null)
+            {
+                Frame = null;
+            }
         }
 
         private void ToogleOpenVideo()
         {
             if (dialog.OpenFileDialog())
             {
+                videoPlayingService.PlayVideo(dialog.FilePath);
+            }
+        }
+
+        private void ToogleCloseApp()
+        {
+            CloseAction?.Invoke();
+            if (webCamService != null)
+            {
+                webCamService.Dispose();
             }
         }
     }

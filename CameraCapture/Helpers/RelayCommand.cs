@@ -5,35 +5,24 @@ namespace CameraCaptureWPF.Helpers
 {
     public class RelayCommand : ICommand
     {
-        private Action _targetExecuteMethod;
-        private Func<bool> _targetCanExecuteMethod;
+        private readonly Func<bool> targetCanExecuteMethod;
+        private readonly Action targetExecuteMethod;
 
         public RelayCommand(Action executeMethod)
         {
-            _targetExecuteMethod = executeMethod;
+            targetExecuteMethod = executeMethod;
         }
 
         public RelayCommand(Action executeMethod, Func<bool> canExecuteMethod)
         {
-            _targetExecuteMethod = executeMethod;
-            _targetCanExecuteMethod = canExecuteMethod;
-        }
-
-        public void RaiseCanExecuteChanged()
-        {
-            CanExecuteChanged(this, EventArgs.Empty);
+            targetExecuteMethod = executeMethod;
+            targetCanExecuteMethod = canExecuteMethod;
         }
 
         bool ICommand.CanExecute(object parameter)
         {
-            if (_targetCanExecuteMethod != null)
-            {
-                return _targetCanExecuteMethod();
-            }
-            if (_targetExecuteMethod != null)
-            {
-                return true;
-            }
+            if (targetCanExecuteMethod != null) return targetCanExecuteMethod();
+            if (targetExecuteMethod != null) return true;
             return false;
         }
 
@@ -44,53 +33,56 @@ namespace CameraCaptureWPF.Helpers
 
         void ICommand.Execute(object parameter)
         {
-            _targetExecuteMethod?.Invoke();
-        }
-    }
-
-    public class RelayCommand<T> : ICommand
-    {
-        private Action<T> _targetExecuteMethod;
-        private Func<T, bool> _targetCanExecuteMethod;
-
-        public RelayCommand(Action<T> executeMethod)
-        {
-            _targetExecuteMethod = executeMethod;
-        }
-
-        public RelayCommand(Action<T> executeMethod, Func<T, bool> canExecuteMethod)
-        {
-            _targetExecuteMethod = executeMethod;
-            _targetCanExecuteMethod = canExecuteMethod;
+            targetExecuteMethod?.Invoke();
         }
 
         public void RaiseCanExecuteChanged()
         {
             CanExecuteChanged(this, EventArgs.Empty);
         }
+    }
+
+    public class RelayCommand<T> : ICommand
+    {
+        private readonly Func<T, bool> targetCanExecuteMethod;
+        private readonly Action<T> targetExecuteMethod;
+
+        public RelayCommand(Action<T> executeMethod)
+        {
+            targetExecuteMethod = executeMethod;
+        }
+
+        public RelayCommand(Action<T> executeMethod, Func<T, bool> canExecuteMethod)
+        {
+            targetExecuteMethod = executeMethod;
+            targetCanExecuteMethod = canExecuteMethod;
+        }
 
         bool ICommand.CanExecute(object parameter)
         {
-            if (_targetCanExecuteMethod != null)
+            if (targetCanExecuteMethod != null)
             {
-                T tparm = (T)parameter;
-                return _targetCanExecuteMethod(tparm);
+                var tparm = (T) parameter;
+                return targetCanExecuteMethod(tparm);
             }
-            if (_targetExecuteMethod != null)
-            {
-                return true;
-            }
+
+            if (targetExecuteMethod != null) return true;
             return false;
         }
 
         // Beware - should use weak references if command instance lifetime is longer than lifetime of
         // UI objects that get hooked up to command
         // Prism commands solve this in their implementation
-        public event EventHandler CanExecuteChanged = delegate { };
+        public event EventHandler CanExecuteChanged = (sender, args) => { };
 
         void ICommand.Execute(object parameter)
         {
-            _targetExecuteMethod?.Invoke((T)parameter);
+            targetExecuteMethod?.Invoke((T) parameter);
+        }
+
+        public void RaiseCanExecuteChanged()
+        {
+            CanExecuteChanged(this, EventArgs.Empty);
         }
     }
 }

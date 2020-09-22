@@ -1,7 +1,8 @@
-﻿using Emgu.CV;
-using Emgu.CV.Structure;
-using System;
+﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
+using Emgu.CV;
+using Emgu.CV.Structure;
 
 namespace CameraCaptureWPF.Service
 {
@@ -14,11 +15,11 @@ namespace CameraCaptureWPF.Service
     ///     6.nvcuda.dll needed if have not Nvidia GPU on computer
     ///     All libs must to be copied into the bin folder
     /// </summary>
-    public class WebCamService
+    public class WebCamService : IDisposable
     {
         public delegate void ImageChangedEventHandler(object sender, Image<Bgr, byte> image);
 
-        private readonly VideoCapture capture;
+        private VideoCapture capture;
         private BackgroundWorker webCamWorker;
 
         /// <summary>
@@ -27,19 +28,51 @@ namespace CameraCaptureWPF.Service
         /// </summary>
         public WebCamService()
         {
-            try
-            {
-                capture = new VideoCapture();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-
             InitializeWorkers();
         }
 
+        private VideoCapture Capture
+        {
+            get
+            {
+                try
+                {
+                    if (capture == null)
+                    {
+                        capture = new VideoCapture();
+                    }
+
+                    if (!capture.IsOpened)
+                    {
+                        capture.Start();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e);
+                }
+
+                return capture;
+            }
+        }
+
+        /// <summary>
+        ///     Flag when service is running
+        /// </summary>
         public bool IsRunning => webCamWorker?.IsBusy ?? false;
+
+        public void Dispose()
+        {
+            webCamWorker.DoWork -= WbCamWorkerDoWork;
+            webCamWorker.RunWorkerCompleted -= WebCamWorkerCompleted;
+            Capture?.Dispose();
+            webCamWorker?.Dispose();
+        }
+
+        public void StopWebCamCapture()
+        {
+            Capture.Stop();
+        }
 
         public event ImageChangedEventHandler ImageChanged;
 
@@ -88,7 +121,9 @@ namespace CameraCaptureWPF.Service
         {
             while (!webCamWorker.CancellationPending)
                 // Or _capture.Retrieve(frame, 0)
-                RaiseImageChangedEvent(capture.QueryFrame().ToImage<Bgr, byte>());
+            {
+                RaiseImageChangedEvent(Capture.QueryFrame().ToImage<Bgr, byte>());
+            }
         }
 
         private void WebCamWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
