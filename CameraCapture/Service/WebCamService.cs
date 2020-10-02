@@ -4,7 +4,7 @@ using System.Diagnostics;
 using Emgu.CV;
 using Emgu.CV.Structure;
 
-namespace CameraCaptureWPF.Service
+namespace CVCapturePanel.Service
 {
     /// <summary>
     ///     Class for camera call and async background works

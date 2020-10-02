@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Data;
 using System.Windows.Input;
-using CameraCaptureWPF.Helpers;
-using CameraCaptureWPF.Service;
+using CVCapturePanel.Helpers;
+using CVCapturePanel.Model;
+using CVCapturePanel.Service;
 using Emgu.CV;
 using Emgu.CV.Structure;
 
-namespace CameraCaptureWPF.ViewModel
+namespace CVCapturePanel.ViewModel
 {
     public class MainViewModel : BaseViewModel
     {
@@ -35,6 +36,15 @@ namespace CameraCaptureWPF.ViewModel
             FillComboBox();
             CloseAction = methodAction;
         }
+
+        /// <summary>
+        ///     Property for webCam service
+        /// </summary>
+        public ICommand ToggleWebServiceCommand { get; set; }
+
+        public ICommand ToogleOpenVideoCommand { get; set; }
+
+        public ICommand ToogleCloseAppCommand { get; set; }
 
         public CollectionView Video { get; private set; }
         public Action CloseAction { get; set; }
@@ -91,15 +101,6 @@ namespace CameraCaptureWPF.ViewModel
 
             set => SetField(ref frame, value);
         }
-
-        /// <summary>
-        ///     Property for webCam service
-        /// </summary>
-        public ICommand ToggleWebServiceCommand { get; private set; }
-
-        public ICommand ToogleOpenVideoCommand { get; private set; }
-
-        public ICommand ToogleCloseAppCommand { get; private set; }
 
         public event ImageWithDetectionChangedEventHandler ImageWithDetectionChanged;
 
@@ -212,6 +213,7 @@ namespace CameraCaptureWPF.ViewModel
             if (webCamService != null)
             {
                 webCamService.Dispose();
+                videoPlayingService.Dispose();
             }
         }
     }

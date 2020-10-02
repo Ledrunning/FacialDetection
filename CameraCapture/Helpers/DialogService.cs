@@ -1,8 +1,11 @@
-﻿using Microsoft.Win32;
-using System.Windows;
+﻿using System.Windows;
+using Microsoft.Win32;
 
-namespace CameraCaptureWPF.Helpers
+namespace CVCapturePanel.Helpers
 {
+    /// <summary>
+    ///     Class with open dialog for opening video files
+    /// </summary>
     public class DialogService : IDialogService
     {
         public string FilePath { get; set; }

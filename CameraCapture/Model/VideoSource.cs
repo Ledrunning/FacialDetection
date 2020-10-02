@@ -1,4 +1,4 @@
-﻿namespace CameraCaptureWPF.ViewModel
+﻿namespace CVCapturePanel.Model
 {
     public class VideoSource
     {

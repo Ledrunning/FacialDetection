@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace CameraCaptureWPF.Helpers
+namespace CVCapturePanel.Helpers
 {
     public abstract class NotificationObject : INotifyPropertyChanged
     {

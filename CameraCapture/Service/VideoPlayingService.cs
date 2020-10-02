@@ -2,8 +2,11 @@
 using System.Threading;
 using Emgu.CV;
 
-namespace CameraCaptureWPF.Service
+namespace CVCapturePanel.Service
 {
+    /// <summary>
+    ///     Video player service for AVI and MPEG4 formats
+    /// </summary>
     public class VideoPlayingService : IDisposable
     {
         public delegate void VideoFrameChanged(object sender, Mat frame);

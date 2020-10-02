@@ -1,6 +1,6 @@
-﻿using CameraCaptureWPF.Helpers;
+﻿using CVCapturePanel.Helpers;
 
-namespace CameraCaptureWPF.ViewModel
+namespace CVCapturePanel.ViewModel
 {
     public class BaseViewModel : NotificationObject
     {

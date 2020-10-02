@@ -1,10 +1,10 @@
-﻿<Window x:Class="CameraCaptureWPF.View.MainWindow"
+﻿<Window x:Class="CVCapturePanel.View.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:converters="clr-namespace:CameraCaptureWPF.Converters"
-        xmlns:viewModel="clr-namespace:CameraCaptureWPF.ViewModel"
+        xmlns:converters="clr-namespace:CVCapturePanel.Converters"
+        xmlns:viewModel="clr-namespace:CVCapturePanel.ViewModel"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Background="{StaticResource BackgroundKey}"
@@ -12,7 +12,6 @@
     <Window.Resources>
         <converters:BitmapSourceConvert x:Key="BitmapSourceConvert" />
     </Window.Resources>
-
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="133*" />
@@ -23,9 +22,9 @@
 
         <Menu Background="Transparent" Margin="0,0,206.579,534" Grid.ColumnSpan="2">
             <MenuItem Background="Transparent" Header="File" Height="21">
-                <MenuItem Background="Transparent" Header="{Binding OpenSource}" Click="VideoOpenOnClick" Command="{Binding ToogleOpenVideoCommand}" />
-                <MenuItem Background="Transparent" Header="{Binding CloseSource}" Click="VideoCloseOnClick" />
-                <MenuItem Background="Transparent" Header="{Binding Exit}" Command="{Binding ToogleCloseAppCommand}" Click="MenuItemOnClick" />
+                <MenuItem Background="Transparent" Header="{Binding OpenSource}" Command="{Binding ToogleOpenVideoCommand}" />
+                <MenuItem Background="Transparent" Header="{Binding CloseSource}" />
+                <MenuItem Background="Transparent" Header="{Binding Exit}" Command="{Binding ToogleCloseAppCommand}" />
                 <Separator />
             </MenuItem>
         </Menu>
@@ -38,7 +37,6 @@
         <StackPanel Grid.Column="3" Margin="0,48,0,0">
             <Label FontFamily="Arial" Content="{Binding SelectSource}"></Label>
             <ComboBox FontFamily="Arial"
-                      SelectionChanged="InputStreamOnSelectionChanged"
                       ItemsSource="{Binding Path=Video}"
                       SelectedValue="{Binding Path=SelectedVideoSource}" />
         </StackPanel>
