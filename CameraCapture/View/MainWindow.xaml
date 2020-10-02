@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:converters="clr-namespace:CVCapturePanel.Converters"
+        xmlns:viewModel="clr-namespace:CVCapturePanel.ViewModel"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Background="{StaticResource BackgroundKey}"
@@ -11,7 +12,6 @@
     <Window.Resources>
         <converters:BitmapSourceConvert x:Key="BitmapSourceConvert" />
     </Window.Resources>
-
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="133*" />

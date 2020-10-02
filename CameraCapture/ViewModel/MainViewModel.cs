@@ -37,20 +37,14 @@ namespace CVCapturePanel.ViewModel
             CloseAction = methodAction;
         }
 
-        private ICommand toggleWebServiceCommand;
-
         /// <summary>
         ///     Property for webCam service
         /// </summary>
-        private ICommand ToggleWebServiceCommand
-        {
-            get => toggleWebServiceCommand;
-            set {}
-        }
+        public ICommand ToggleWebServiceCommand { get; set; }
 
-        private ICommand ToogleOpenVideoCommand { get; set; }
+        public ICommand ToogleOpenVideoCommand { get; set; }
 
-        private ICommand ToogleCloseAppCommand { get; set; }
+        public ICommand ToogleCloseAppCommand { get; set; }
 
         public CollectionView Video { get; private set; }
         public Action CloseAction { get; set; }
@@ -150,7 +144,7 @@ namespace CVCapturePanel.ViewModel
         /// </summary>
         private void InitializeCommands()
         {
-            toggleWebServiceCommand = new RelayCommand(ToggleWebServiceExecute);
+            ToggleWebServiceCommand = new RelayCommand(ToggleWebServiceExecute);
             ToogleOpenVideoCommand = new RelayCommand(ToogleOpenVideo);
             ToogleCloseAppCommand = new RelayCommand(ToogleCloseApp);
         }
