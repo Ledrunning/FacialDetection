@@ -7,8 +7,8 @@
     <ProjectGuid>{814A29B6-861B-4024-9710-CB93432C0E37}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CameraCaptureWPF</RootNamespace>
-    <AssemblyName>FaceDetector</AssemblyName>
+    <RootNamespace>CVCapturePanel</RootNamespace>
+    <AssemblyName>CVCapturePanel</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -196,7 +196,7 @@
     <Compile Include="Service\WebCamService.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
-    <Compile Include="ViewModel\VideoSource.cs" />
+    <Compile Include="Model\VideoSource.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

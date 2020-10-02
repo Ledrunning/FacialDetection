@@ -1,4 +1,4 @@
-﻿namespace CameraCaptureWPF
+﻿namespace CVCapturePanel
 {
     public interface IDialogService
     {

@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace CameraCaptureWPF
+namespace CVCapturePanel
 {
     /// <summary>
     /// Логика взаимодействия для App.xaml

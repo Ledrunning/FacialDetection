@@ -7,19 +7,22 @@ using System.IO;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
-namespace CameraCaptureWPF.Converters
+namespace CVCapturePanel.Converters
 {
     public class BitmapSourceConvert : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null) return null;
+            if (value == null)
+            {
+                return null;
+            }
 
             using (var ms = new MemoryStream())
             {
                 try
                 {
-                    ((Bitmap)value).Save(ms, ImageFormat.Bmp);
+                    ((Bitmap) value).Save(ms, ImageFormat.Bmp);
                     var image = new BitmapImage();
                     image.BeginInit();
                     ms.Seek(0, SeekOrigin.Begin);
