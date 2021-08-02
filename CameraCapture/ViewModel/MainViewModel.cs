@@ -144,7 +144,7 @@ namespace CVCapturePanel.ViewModel
         /// </summary>
         private void InitializeCommands()
         {
-            ToggleWebServiceCommand = new RelayCommand(ToggleWebServiceExecute);
+            ToggleWebServiceCommand = new RelayCommand(TogglePlayerServiceExecute);
             ToogleOpenVideoCommand = new RelayCommand(ToogleOpenVideo);
             ToogleCloseAppCommand = new RelayCommand(ToogleCloseApp);
         }
@@ -152,9 +152,9 @@ namespace CVCapturePanel.ViewModel
         /// <summary>
         ///     Service From WebCamService
         /// </summary>
-        private void ToggleWebServiceExecute()
+        private void TogglePlayerServiceExecute()
         {
-            if (SelectedVideoSource == sourceList[1].Name)
+            if (SelectedVideoSource == sourceList[1].Name && !IsDialogOpened)
             {
                 if (!webCamService.IsRunning)
                 {
@@ -168,15 +168,17 @@ namespace CVCapturePanel.ViewModel
                     ButtonContent = "Start";
                     webCamService.CancelServiceAsync();
                     ClearFrame();
+                    webCamService.Dispose();
                 }
             }
-            else if (SelectedVideoSource == sourceList[0].Name)
+            else if (SelectedVideoSource == sourceList[0].Name && IsDialogOpened)
             {
                 if (!videoPlayingService.IsPlaying)
                 {
                     IsStreaming = true;
                     ButtonContent = "Stop";
-                    ToogleOpenVideo();
+                    //ToogleOpenVideo();
+                    videoPlayingService.PlayVideo(VideoFilePath);
                 }
                 else
                 {
@@ -185,7 +187,7 @@ namespace CVCapturePanel.ViewModel
                     videoPlayingService.VideoFramesChangeEvent -= VideoPlayingServiceVideoFramesChangeEvent;
                     videoPlayingService.Dispose();
                     videoPlayingService.StopPlaying();
-
+                    IsDialogOpened = false;
                     ClearFrame();
                 }
             }
@@ -201,10 +203,8 @@ namespace CVCapturePanel.ViewModel
 
         private void ToogleOpenVideo()
         {
-            if (dialog.OpenFileDialog())
-            {
-                videoPlayingService.PlayVideo(dialog.FilePath);
-            }
+            IsDialogOpened = dialog.OpenFileDialog();
+            VideoFilePath = dialog.FilePath;
         }
 
         private void ToogleCloseApp()
@@ -216,5 +216,8 @@ namespace CVCapturePanel.ViewModel
                 videoPlayingService.Dispose();
             }
         }
+
+        private bool IsDialogOpened { get; set; }
+        private string VideoFilePath { get; set; }
     }
 }

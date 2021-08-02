@@ -33,6 +33,7 @@ namespace CVCapturePanel.Service
 
         private VideoCapture Capture
         {
+            set => capture = value;
             get
             {
                 try
@@ -40,11 +41,15 @@ namespace CVCapturePanel.Service
                     if (capture == null)
                     {
                         capture = new VideoCapture();
-                    }
-
-                    if (!capture.IsOpened)
-                    {
-                        capture.Start();
+                        
+                        if (!capture.IsOpened)
+                        {
+                            capture.Start();
+                        }
+                        else
+                        {
+                            capture.Stop();
+                        }
                     }
                 }
                 catch (Exception e)
@@ -65,8 +70,10 @@ namespace CVCapturePanel.Service
         {
             webCamWorker.DoWork -= WbCamWorkerDoWork;
             webCamWorker.RunWorkerCompleted -= WebCamWorkerCompleted;
+            webCamWorker.CancelAsync();
             Capture?.Dispose();
-            webCamWorker?.Dispose();
+            Capture = null;
+            //webCamWorker?.Dispose();
         }
 
         public void StopWebCamCapture()
