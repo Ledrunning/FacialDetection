@@ -73,12 +73,7 @@ namespace CVCapturePanel.Service
             webCamWorker.CancelAsync();
             Capture?.Dispose();
             Capture = null;
-            //webCamWorker?.Dispose();
-        }
-
-        public void StopWebCamCapture()
-        {
-            Capture.Stop();
+            webCamWorker?.Dispose();
         }
 
         public event ImageChangedEventHandler ImageChanged;

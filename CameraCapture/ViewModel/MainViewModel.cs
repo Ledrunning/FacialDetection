@@ -17,7 +17,6 @@ namespace CVCapturePanel.ViewModel
 
         private readonly IDialogService dialog = new DialogService();
         private readonly IList<VideoSource> sourceList = new List<VideoSource>();
-        private readonly WebCamService webCamService = new WebCamService();
         private string buttonContent = "Start";
         private Bitmap frame;
 
@@ -25,6 +24,7 @@ namespace CVCapturePanel.ViewModel
         private string selectedVideoSource;
 
         private VideoPlayingService videoPlayingService;
+        private WebCamService webCamService;
 
         /// <summary>
         ///     .ctor
@@ -102,11 +102,15 @@ namespace CVCapturePanel.ViewModel
             set => SetField(ref frame, value);
         }
 
+        private bool IsDialogOpened { get; set; }
+        private string VideoFilePath { get; set; }
+
         public event ImageWithDetectionChangedEventHandler ImageWithDetectionChanged;
 
         private void InitializeWebCamService()
         {
-            webCamService.ImageChanged += WebCamServiceOnImageChanged;
+            webCamService = new WebCamService();
+            webCamService.ImageChanged += OnCameraImageChanged;
         }
 
         private void RaiseImageWithDetectionChangedEvent(Image<Bgr, byte> image)
@@ -114,7 +118,7 @@ namespace CVCapturePanel.ViewModel
             ImageWithDetectionChanged?.Invoke(this, image);
         }
 
-        private void WebCamServiceOnImageChanged(object sender, Image<Bgr, byte> image)
+        private void OnCameraImageChanged(object sender, Image<Bgr, byte> image)
         {
             //RaiseImageWithDetectionChangedEvent(image);
             Frame = image.Bitmap;
@@ -131,7 +135,6 @@ namespace CVCapturePanel.ViewModel
         {
             videoPlayingService = new VideoPlayingService();
             videoPlayingService.VideoFramesChangeEvent += VideoPlayingServiceVideoFramesChangeEvent;
-            InitializeWebCamService();
         }
 
         private void VideoPlayingServiceVideoFramesChangeEvent(object sender, Mat frame)
@@ -156,6 +159,11 @@ namespace CVCapturePanel.ViewModel
         {
             if (SelectedVideoSource == sourceList[1].Name && !IsDialogOpened)
             {
+                if (webCamService == null)
+                {
+                    InitializeWebCamService();
+                }
+
                 if (!webCamService.IsRunning)
                 {
                     IsStreaming = true;
@@ -169,6 +177,7 @@ namespace CVCapturePanel.ViewModel
                     webCamService.CancelServiceAsync();
                     ClearFrame();
                     webCamService.Dispose();
+                    webCamService = null;
                 }
             }
             else if (SelectedVideoSource == sourceList[0].Name && IsDialogOpened)
@@ -216,8 +225,5 @@ namespace CVCapturePanel.ViewModel
                 videoPlayingService.Dispose();
             }
         }
-
-        private bool IsDialogOpened { get; set; }
-        private string VideoFilePath { get; set; }
     }
 }
