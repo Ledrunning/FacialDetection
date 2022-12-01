@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace CVCapturePanel.ViewModel
 {
-    public abstract class BaseViewModel
+    public abstract class BaseViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
