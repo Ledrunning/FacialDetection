@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Windows.Data;
 using System.Windows.Input;
 using CVCapturePanel.Service;
 using Emgu.CV;
@@ -11,11 +9,10 @@ namespace CVCapturePanel.ViewModel
 {
     public class MainViewModel : BaseViewModel
     {
-        public delegate void ImageWithDetectionChangedEventHandler(object sender, Image<Bgr, byte> image);
         private string buttonContent = "Start";
         private Bitmap frame;
         private bool isStreaming;
-        private WebCamService webCamService;
+        private WebCameraService webCameraService;
 
         /// <summary>
         ///     .ctor
@@ -29,9 +26,9 @@ namespace CVCapturePanel.ViewModel
         /// <summary>
         ///     Property for webCam service
         /// </summary>
-        public ICommand ToggleWebServiceCommand { get; set; }
+        public ICommand ToggleCameraServiceCommand { get; set; }
 
-        
+
         public ICommand ToggleCloseAppCommand { get; set; }
 
         public Action CloseAction { get; set; }
@@ -66,29 +63,17 @@ namespace CVCapturePanel.ViewModel
         {
             get => frame;
 
-            set
-            {
-                frame = value;
-                OnPropertyChanged();
-            }
+            set => SetField(ref frame, value);
         }
-        
-        public event ImageWithDetectionChangedEventHandler ImageWithDetectionChanged;
 
         private void InitializeWebCamService()
         {
-            webCamService = new WebCamService();
-            webCamService.ImageChanged += OnCameraImageChanged;
-        }
-
-        private void RaiseImageWithDetectionChangedEvent(Image<Bgr, byte> image)
-        {
-            ImageWithDetectionChanged?.Invoke(this, image);
+            webCameraService = new WebCameraService();
+            webCameraService.ImageChanged += OnCameraImageChanged;
         }
 
         private void OnCameraImageChanged(object sender, Image<Bgr, byte> image)
         {
-            RaiseImageWithDetectionChangedEvent(image);
             Frame = image.Bitmap;
         }
 
@@ -97,34 +82,34 @@ namespace CVCapturePanel.ViewModel
         /// </summary>
         private void InitializeCommands()
         {
-            ToggleWebServiceCommand = new RelayCommand(TogglePlayerServiceExecute);
+            ToggleCameraServiceCommand = new RelayCommand(ToggleCameraServiceExecute);
             ToggleCloseAppCommand = new RelayCommand(ToggleCloseApp);
         }
 
         /// <summary>
         ///     Service From WebCamService
         /// </summary>
-        private void TogglePlayerServiceExecute()
+        private void ToggleCameraServiceExecute()
         {
-            if (webCamService == null)
+            if (webCameraService == null)
             {
                 InitializeWebCamService();
             }
 
-            if (!webCamService.IsRunning)
+            if (!webCameraService.IsRunning)
             {
                 IsStreaming = true;
                 ButtonContent = "Stop";
-                webCamService.RunServiceAsync();
+                webCameraService.RunServiceAsync();
             }
             else
             {
                 IsStreaming = false;
                 ButtonContent = "Start";
-                webCamService.CancelServiceAsync();
+                webCameraService.CancelServiceAsync();
                 ClearFrame();
-                webCamService.Dispose();
-                webCamService = null;
+                webCameraService.Dispose();
+                webCameraService = null;
             }
         }
 
@@ -135,11 +120,11 @@ namespace CVCapturePanel.ViewModel
                 Frame = null;
             }
         }
-        
+
         private void ToggleCloseApp()
         {
             CloseAction?.Invoke();
-            webCamService?.Dispose();
+            webCameraService?.Dispose();
         }
     }
 }

@@ -15,7 +15,7 @@ namespace CVCapturePanel.Service
     ///     6.nvcuda.dll needed if have not Nvidia GPU on computer
     ///     All libs must to be copied into the bin folder
     /// </summary>
-    public class WebCamService : IDisposable
+    public class WebCameraService : IDisposable
     {
         public delegate void ImageChangedEventHandler(object sender, Image<Bgr, byte> image);
 
@@ -26,7 +26,7 @@ namespace CVCapturePanel.Service
         ///     Capture stream from camera
         ///     And init background workers todo crashing if camera does't exist
         /// </summary>
-        public WebCamService()
+        public WebCameraService()
         {
             InitializeWorkers();
         }
@@ -41,7 +41,7 @@ namespace CVCapturePanel.Service
                     if (capture == null)
                     {
                         capture = new VideoCapture();
-                        
+
                         if (!capture.IsOpened)
                         {
                             capture.Start();

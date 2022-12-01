@@ -11,8 +11,8 @@ namespace CVCapturePanel.View
         public MainWindow()
         {
             InitializeComponent();
-            var vm = new MainViewModel(Close);
-            DataContext = vm;
+            var viewModel = new MainViewModel(Close);
+            DataContext = viewModel;
         }
     }
 }

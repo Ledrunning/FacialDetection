@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:converters="clr-namespace:CVCapturePanel.Converters"
-        xmlns:viewModel="clr-namespace:CVCapturePanel.ViewModel"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Background="{StaticResource BackgroundKey}"
@@ -31,9 +30,8 @@
         <StackPanel Grid.Column="3" Margin="0,200,0,300">
             <Button Background="Transparent" FontFamily="Arial"
                     RenderTransformOrigin="0.533,-0.017" Height="26" 
-                    Command="{Binding ToggleWebServiceCommand}"
-                    Content="{Binding ButtonContent}">
-            </Button>
+                    Command="{Binding ToggleCameraServiceCommand}"
+                    Content="{Binding ButtonContent}" />
         </StackPanel>
     </Grid>
 </Window>
