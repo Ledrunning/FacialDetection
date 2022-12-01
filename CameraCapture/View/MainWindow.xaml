@@ -20,15 +20,6 @@
             <ColumnDefinition Width="118*" />
         </Grid.ColumnDefinitions>
 
-        <Menu Background="Transparent" Margin="0,0,206.579,534" Grid.ColumnSpan="2">
-            <MenuItem Background="Transparent" Header="File" Height="21">
-                <MenuItem Background="Transparent" Header="{Binding OpenSource}" Command="{Binding ToogleOpenVideoCommand}" />
-                <MenuItem Background="Transparent" Header="{Binding CloseSource}" />
-                <MenuItem Background="Transparent" Header="{Binding Exit}" Command="{Binding ToogleCloseAppCommand}" />
-                <Separator />
-            </MenuItem>
-        </Menu>
-
         <StackPanel Margin="10,35,0,10" Grid.ColumnSpan="3" Grid.Column="0">
             <Image Source="{Binding Frame, Converter={StaticResource BitmapSourceConvert}}"
                    Stretch="Uniform" Margin="0,0,50,10" />
@@ -36,9 +27,6 @@
 
         <StackPanel Grid.Column="3" Margin="0,48,0,0">
             <Label FontFamily="Arial" Content="{Binding SelectSource}"></Label>
-            <ComboBox FontFamily="Arial"
-                      ItemsSource="{Binding Path=Video}"
-                      SelectedValue="{Binding Path=SelectedVideoSource}" />
         </StackPanel>
         <StackPanel Grid.Column="3" Margin="0,200,0,300">
             <Button Background="Transparent" FontFamily="Arial"
