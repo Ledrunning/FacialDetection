@@ -44,7 +44,7 @@ namespace CVCapturePanel.ViewModel
         }
 
         /// <summary>
-        ///     Start webCam service button toogle
+        ///     Start webCam service button toggle
         /// </summary>
         public bool IsStreaming
         {
