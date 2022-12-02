@@ -1,7 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing;
+using CVCapturePanel.Constants;
 using Emgu.CV;
+using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 
 namespace CVCapturePanel.Service
@@ -69,7 +72,6 @@ namespace CVCapturePanel.Service
         public void Dispose()
         {
             webCamWorker.DoWork -= WbCamWorkerDoWork;
-            webCamWorker.RunWorkerCompleted -= WebCamWorkerCompleted;
             webCamWorker.CancelAsync();
             Capture?.Dispose();
             Capture = null;
@@ -111,7 +113,6 @@ namespace CVCapturePanel.Service
             webCamWorker = new BackgroundWorker();
             webCamWorker.WorkerSupportsCancellation = true;
             webCamWorker.DoWork += WbCamWorkerDoWork;
-            webCamWorker.RunWorkerCompleted += WebCamWorkerCompleted;
         }
 
         /// <summary>
@@ -124,12 +125,38 @@ namespace CVCapturePanel.Service
             while (!webCamWorker.CancellationPending)
                 // Or _capture.Retrieve(frame, 0)
             {
-                RaiseImageChangedEvent(Capture.QueryFrame().ToImage<Bgr, byte>());
+                var frameRate = Capture.GetCaptureProperty(CapProp.Fps); //get fps
+                var sourceType = Capture.CaptureSource;
+                var image = Capture.QueryFrame().ToImage<Bgr, byte>();
+
+                SetBackgroundText(image, 
+                    $"Source: {sourceType}",
+                    ScreenText.SourceType, 
+                    ScreenText.Green);
+                
+                SetBackgroundText(image, 
+                    $"{DateTime.Now}",
+                    ScreenText.DateAndTime, 
+                    ScreenText.Green, 0.5);
+
+                SetBackgroundText(image,
+                    $"{frameRate} fps",
+                    ScreenText.FrameRate,
+                    ScreenText.Green);
+
+                RaiseImageChangedEvent(image);
             }
         }
 
-        private void WebCamWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        private static void SetBackgroundText(IInputOutputArray image, string text, Point point, Bgr textColor, double fontScale = 1.0)
         {
+            CvInvoke.PutText(
+                image,
+                text,
+                point,
+                FontFace.HersheyComplex,
+                fontScale,
+                textColor.MCvScalar);
         }
     }
 }

@@ -119,6 +119,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Constants\ScreenText.cs" />
     <Compile Include="Converters\BitmapSourceConvert.cs" />
     <Page Include="Themes\IG\IG.MSControls.Core.Implicit.xaml">
       <Generator>MSBuild:Compile</Generator>
