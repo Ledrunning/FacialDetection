@@ -4,6 +4,7 @@ using System.Windows.Input;
 using CVCapturePanel.Service;
 using Emgu.CV;
 using Emgu.CV.Structure;
+using NLog;
 
 namespace CVCapturePanel.ViewModel
 {
@@ -13,6 +14,7 @@ namespace CVCapturePanel.ViewModel
         private Bitmap frame;
         private bool isStreaming;
         private WebCameraService webCameraService;
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         ///     .ctor
@@ -101,6 +103,7 @@ namespace CVCapturePanel.ViewModel
                 IsStreaming = true;
                 ButtonContent = "Stop";
                 webCameraService.RunServiceAsync();
+                logger.Info("Video streaming is started!");
             }
             else
             {
@@ -110,6 +113,7 @@ namespace CVCapturePanel.ViewModel
                 ClearFrame();
                 webCameraService.Dispose();
                 webCameraService = null;
+                logger.Info("Video streaming stopped!");
             }
         }
 

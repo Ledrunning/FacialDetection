@@ -1,11 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
 using CVCapturePanel.Constants;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
+using NLog;
 
 namespace CVCapturePanel.Service
 {
@@ -23,6 +23,7 @@ namespace CVCapturePanel.Service
         public delegate void ImageChangedEventHandler(object sender, Image<Bgr, byte> image);
 
         private VideoCapture capture;
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
         private BackgroundWorker webCamWorker;
 
         /// <summary>
@@ -57,7 +58,7 @@ namespace CVCapturePanel.Service
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine(e);
+                    logger.Error("Video capture failed! {e}", e);
                 }
 
                 return capture;
@@ -129,14 +130,14 @@ namespace CVCapturePanel.Service
                 var sourceType = Capture.CaptureSource;
                 var image = Capture.QueryFrame().ToImage<Bgr, byte>();
 
-                SetBackgroundText(image, 
+                SetBackgroundText(image,
                     $"Source: {sourceType}",
-                    ScreenText.SourceType, 
+                    ScreenText.SourceType,
                     ScreenText.Green);
-                
-                SetBackgroundText(image, 
+
+                SetBackgroundText(image,
                     $"{DateTime.Now}",
-                    ScreenText.DateAndTime, 
+                    ScreenText.DateAndTime,
                     ScreenText.Green, 0.5);
 
                 SetBackgroundText(image,
@@ -148,7 +149,8 @@ namespace CVCapturePanel.Service
             }
         }
 
-        private static void SetBackgroundText(IInputOutputArray image, string text, Point point, Bgr textColor, double fontScale = 1.0)
+        private static void SetBackgroundText(IInputOutputArray image, string text, Point point, Bgr textColor,
+            double fontScale = 1.0)
         {
             CvInvoke.PutText(
                 image,
