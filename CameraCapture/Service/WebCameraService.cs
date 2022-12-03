@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.IO;
+using System.Reflection;
 using CVCapturePanel.Constants;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
@@ -22,8 +24,11 @@ namespace CVCapturePanel.Service
     {
         public delegate void ImageChangedEventHandler(object sender, Image<Bgr, byte> image);
 
-        private VideoCapture capture;
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
+
+        private VideoCapture capture;
+
+        private CascadeClassifier cascadeClassifier;
         private BackgroundWorker webCamWorker;
 
         /// <summary>
@@ -33,6 +38,7 @@ namespace CVCapturePanel.Service
         public WebCameraService()
         {
             InitializeWorkers();
+            InitializeClassifier();
         }
 
         private VideoCapture Capture
@@ -77,6 +83,21 @@ namespace CVCapturePanel.Service
             Capture?.Dispose();
             Capture = null;
             webCamWorker?.Dispose();
+        }
+
+        private void InitializeClassifier()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var path = Path.GetDirectoryName(assembly.Location);
+
+            if (path != null)
+            {
+                cascadeClassifier = new CascadeClassifier(Path.Combine(path, "haarcascade_frontalface_default.xml"));
+            }
+            else
+            {
+                logger.Error("Could not find haarcascade xml file");
+            }
         }
 
         public event ImageChangedEventHandler ImageChanged;
@@ -129,6 +150,15 @@ namespace CVCapturePanel.Service
                 var frameRate = Capture.GetCaptureProperty(CapProp.Fps); //get fps
                 var sourceType = Capture.CaptureSource;
                 var image = Capture.QueryFrame().ToImage<Bgr, byte>();
+
+                var grayFrame = image.Convert<Gray, byte>();
+                var faces = cascadeClassifier.DetectMultiScale(grayFrame, 1.1, 10,
+                    Size.Empty); //the actual face detection happens here
+                foreach (var face in faces)
+                {
+                    image.Draw(face, new Bgr(FaceDetectionConstants.RectangleColor),
+                        FaceDetectionConstants.RectangleThickness); //the detected face(s) is highlighted here using a box that is drawn around it/them
+                }
 
                 SetBackgroundText(image,
                     $"Source: {sourceType}",

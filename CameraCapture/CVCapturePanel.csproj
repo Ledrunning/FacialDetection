@@ -123,6 +123,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Constants\FaceDetectionConstants.cs" />
     <Compile Include="Constants\ScreenText.cs" />
     <Compile Include="Converters\BitmapSourceConvert.cs" />
     <Page Include="Themes\IG\IG.MSControls.Core.Implicit.xaml">
@@ -232,6 +233,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Resource Include="License-LGPL.txt" />
+    <Content Include="haarcascade_frontalface_default.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="msvcp120.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
