@@ -6,3 +6,5 @@ To run app you should put these library into the bin folder (Debug or Release)
 * msvcp140.dll
 * opencv_ffmpeg320_64.dll
 * vcruntime140.dll
+
+And don't forget about haarcascade_frontalface_default.xml just set copy to output directory in your project.
