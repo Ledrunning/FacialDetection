@@ -12,14 +12,6 @@ And don't forget about haarcascade_frontalface_default.xml just set copy to outp
 ## For darcula or metro themes I used WPFToolkit and WPFToolkit.DataVisualization (JenniLe, Shimmy)
 To change themes manualy you should comment old and uncomment required theme in App.xaml f.e Metro Dark Theme:
 
-<details>
-      <summary>Example</summary>
-
-      ```
-      long console output here
-      ```
-</details>
-
 ```xml
       <Application.Resources>
         <ResourceDictionary>
@@ -64,3 +56,5 @@ To change themes manualy you should comment old and uncomment required theme in 
         </ResourceDictionary>
     </Application.Resources>
 ```
+
+##UI Layuot: 
