@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Background="{StaticResource BackgroundKey}"
-        Title="Camera Capture" TextBlock.TextAlignment="Center" MinWidth="200" Height="600" Width="800">
+        Title="Face detection" TextBlock.TextAlignment="Center" MinWidth="200" Height="600" Width="800">
     <Window.Resources>
         <converters:BitmapSourceConvert x:Key="BitmapSourceConvert" />
     </Window.Resources>
