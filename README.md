@@ -59,3 +59,4 @@ To change themes manualy you should comment old and uncomment required theme in 
 
 ## UI Layuot: 
 
+![Screenshot](uilayout.jpg)
