@@ -14,8 +14,7 @@ To change themes manualy you should comment old and uncomment required theme in 
 
 <details>
   <summary>App.xaml</summary>
-```
-  <Application x:Class="CVCapturePanel.App"
+```<Application x:Class="CVCapturePanel.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              StartupUri="View/MainWindow.xaml">
@@ -61,6 +60,5 @@ To change themes manualy you should comment old and uncomment required theme in 
             </Style>
         </ResourceDictionary>
     </Application.Resources>
-</Application>
-```
+</Application>```
 </details>
