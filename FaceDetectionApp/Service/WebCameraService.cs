@@ -78,7 +78,7 @@ namespace CVCapturePanel.Service
 
         public void Dispose()
         {
-            webCamWorker.DoWork -= WbCamWorkerDoWork;
+            webCamWorker.DoWork -= OnWebCameraDoWork;
             webCamWorker.CancelAsync();
             Capture?.Dispose();
             Capture = null;
@@ -134,7 +134,7 @@ namespace CVCapturePanel.Service
         {
             webCamWorker = new BackgroundWorker();
             webCamWorker.WorkerSupportsCancellation = true;
-            webCamWorker.DoWork += WbCamWorkerDoWork;
+            webCamWorker.DoWork += OnWebCameraDoWork;
         }
 
         /// <summary>
@@ -142,8 +142,14 @@ namespace CVCapturePanel.Service
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void WbCamWorkerDoWork(object sender, DoWorkEventArgs e)
+        private void OnWebCameraDoWork(object sender, DoWorkEventArgs e)
         {
+            if (webCamWorker.CancellationPending)
+            {
+                e.Cancel = true;
+                return;
+            }
+
             while (!webCamWorker.CancellationPending)
                 // Or _capture.Retrieve(frame, 0)
             {
@@ -152,7 +158,9 @@ namespace CVCapturePanel.Service
                 var image = Capture.QueryFrame().ToImage<Bgr, byte>();
 
                 var grayFrame = image.Convert<Gray, byte>();
-                var faces = cascadeClassifier.DetectMultiScale(grayFrame, 1.1, 10,
+                var faces = cascadeClassifier.DetectMultiScale(grayFrame, 
+                    FaceDetectionConstants.ScaleFactors, 
+                    FaceDetectionConstants.MinNeighbor,
                     Size.Empty); //the actual face detection happens here
                 foreach (var face in faces)
                 {
