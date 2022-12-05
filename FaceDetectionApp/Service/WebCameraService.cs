@@ -33,7 +33,7 @@ namespace CVCapturePanel.Service
 
         /// <summary>
         ///     Capture stream from camera
-        ///     And init background workers todo crashing if camera does't exist
+        ///     And init background workers todo crashing if camera doesn't exist
         /// </summary>
         public WebCameraService()
         {
@@ -157,16 +157,7 @@ namespace CVCapturePanel.Service
                 var sourceType = Capture.CaptureSource;
                 var image = Capture.QueryFrame().ToImage<Bgr, byte>();
 
-                var grayFrame = image.Convert<Gray, byte>();
-                var faces = cascadeClassifier.DetectMultiScale(grayFrame, 
-                    FaceDetectionConstants.ScaleFactors, 
-                    FaceDetectionConstants.MinNeighbor,
-                    Size.Empty); //the actual face detection happens here
-                foreach (var face in faces)
-                {
-                    image.Draw(face, new Bgr(FaceDetectionConstants.RectangleColor),
-                        FaceDetectionConstants.RectangleThickness); //the detected face(s) is highlighted here using a box that is drawn around it/them
-                }
+                DetectFaces(image);
 
                 SetBackgroundText(image,
                     $"Source: {sourceType}",
@@ -184,6 +175,21 @@ namespace CVCapturePanel.Service
                     ScreenText.Green);
 
                 RaiseImageChangedEvent(image);
+            }
+        }
+
+        private void DetectFaces(Image<Bgr, byte> image)
+        {
+            var grayFrame = image.Convert<Gray, byte>();
+            var faces = cascadeClassifier.DetectMultiScale(grayFrame,
+                FaceDetectionConstants.ScaleFactors,
+                FaceDetectionConstants.MinNeighbor,
+                Size.Empty); //the actual face detection happens here
+            foreach (var face in faces)
+            {
+                image.Draw(face, new Bgr(FaceDetectionConstants.RectangleColor),
+                    FaceDetectionConstants
+                        .RectangleThickness); //the detected face(s) is highlighted here using a box that is drawn around it/them
             }
         }
 
