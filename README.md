@@ -30,14 +30,6 @@ To change themes manualy you should comment old and uncomment required theme in 
                 <!-- MetroDark Theme -->
                 <!--<ResourceDictionary Source="Themes/MetroDark/MetroDark.MSControls.Core.Implicit.xaml" />
                 <ResourceDictionary Source="Themes/MetroDark/MetroDark.MSControls.Toolkit.Implicit.xaml" /> -->
-
-                <!-- Office2010Blue Theme -->
-                <!--<ResourceDictionary Source="Themes/Office2010Blue/Office2010Blue.MSControls.Core.Implicit.xaml" />
-                <ResourceDictionary Source="Themes/Office2010Blue/Office2010Blue.MSControls.Toolkit.Implicit.xaml" />-->
-
-                <!-- Office2013 Theme -->
-                <!--<ResourceDictionary Source="Themes/Office2013/Office2013.MSControls.Core.Implicit.xaml" />
-                <ResourceDictionary Source="Themes/Office2013/Office2013.MSControls.Toolkit.Implicit.xaml" /> -->
             </ResourceDictionary.MergedDictionaries>
 
             <!-- <SolidColorBrush x:Key="BackgroundKey" Color="#FFFFFF" /> Color="#FF181818" -->
