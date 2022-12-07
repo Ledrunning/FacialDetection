@@ -10,11 +10,11 @@ namespace CVCapturePanel.ViewModel
 {
     public class MainViewModel : BaseViewModel
     {
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
         private string buttonContent = "Start";
         private Bitmap frame;
         private bool isStreaming;
         private WebCameraService webCameraService;
-        private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         ///     .ctor
@@ -38,11 +38,7 @@ namespace CVCapturePanel.ViewModel
         public string ButtonContent
         {
             get => buttonContent;
-            set
-            {
-                buttonContent = value;
-                OnPropertyChanged();
-            }
+            set => SetField(ref buttonContent, value);
         }
 
         /// <summary>
@@ -51,11 +47,7 @@ namespace CVCapturePanel.ViewModel
         public bool IsStreaming
         {
             get => isStreaming;
-            set
-            {
-                isStreaming = value;
-                OnPropertyChanged();
-            }
+            set => SetField(ref isStreaming, value);
         }
 
         /// <summary>
@@ -64,7 +56,6 @@ namespace CVCapturePanel.ViewModel
         public Bitmap Frame
         {
             get => frame;
-
             set => SetField(ref frame, value);
         }
 
