@@ -9,11 +9,11 @@ To run app you should put these libraries into the bin folder (Debug or Release)
 
 And don't forget about haarcascade_frontalface_default.xml just set copy to output directory in your project.
 
-Logger is available in this project it write all error and information data into file.
-You should find it in bin folder and it called Logs
+Logger is available in this project it writes all error and information data into a file.
+You should find it in the bin folder and it called Logs
 
 ## For darcula or metro themes I used WPFToolkit and WPFToolkit.DataVisualization (JenniLe, Shimmy)
-To change themes manualy you should comment old and uncomment required theme in App.xaml f.e Metro Dark Theme:
+To change themes manually you should comment old and uncomment required theme in App.xaml f.e Metro Dark Theme:
 
 ```xml
       <Application.Resources>
