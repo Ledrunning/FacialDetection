@@ -1,7 +1,7 @@
 # Simple WPF MVVM Desktop application for facial detection in real time from web camera via Emgu
 ## This application use Emgu 3.x framework
 To run app you should put these libraries into the bin folder (Debug or Release)
-I used EMGU CV x64 version, so I put these libraries along this path * \bin\Debug\x64 *
+I used EMGU CV x64 version, so I put these libraries along this path *\bin\Debug\x64*
 * concrt140.dll
 * cvextern.dll
 * msvcp140.dll
