@@ -19,9 +19,42 @@ To change themes manually you should comment old and uncomment required theme in
 <details> 
   <summary>Theme settings in Application.Resources</summary>
   
-          ```xml
-  
-          ```
+  ```xml
+     <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- IG Theme -->
+                <ResourceDictionary Source="Themes/IG/IG.MSControls.Core.Implicit.xaml" />
+                <ResourceDictionary Source="Themes/IG/IG.MSControls.Toolkit.Implicit.xaml" />
+
+                <!-- Metro Theme -->
+                <!--<ResourceDictionary Source="Themes/Metro/Metro.MSControls.Core.Implicit.xaml" />
+                <ResourceDictionary Source="Themes/Metro/Metro.MSControls.Toolkit.Implicit.xaml" /> -->
+
+                <!-- MetroDark Theme -->
+                <!--<ResourceDictionary Source="Themes/MetroDark/MetroDark.MSControls.Core.Implicit.xaml" />
+                <ResourceDictionary Source="Themes/MetroDark/MetroDark.MSControls.Toolkit.Implicit.xaml" /> -->
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- <SolidColorBrush x:Key="BackgroundKey" Color="#FFFFFF" /> Color="#FF181818" -->
+
+            <!-- Dark Theme -->
+            <SolidColorBrush x:Key="BackgroundKey" Color="#FFFFFF" />
+
+            <Style x:Key="HeaderTextBlockStyle" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="22" />
+                <Setter Property="FontFamily" Value="Segoe UI" />
+                <Setter Property="Foreground" Value="#FF00AADE" />
+            </Style>
+
+            <Style x:Key="SubHeaderTextBlockStyle" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="FontFamily" Value="Segoe UI" />
+                <Setter Property="Foreground" Value="#FF00AADE" />
+            </Style>
+        </ResourceDictionary>
+        </Application.Resources>
+  ```
   
 </details>
 
