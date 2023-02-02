@@ -2,6 +2,7 @@
 ## This application use Emgu CV 3.2 framework from https://www.emgu.com/wiki/index.php/Main_Page
 
 Emgu CV 3.2 version documentation available by current link: https://www.emgu.com/wiki/index.php/Version_History#Emgu.CV-3.2.0
+
 Emgu CV 3.2 version download link https://sourceforge.net/projects/emgucv/
 
 To run app you should download Emgu CV from link above, install it, find and put these libraries into the bin folder (Debug or Release)
