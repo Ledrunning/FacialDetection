@@ -1,5 +1,5 @@
 # Simple WPF MVVM Desktop application for facial detection in real time from web camera via Emgu
-## This application use Emgu 3.x framework
+## This application use Emgu 3.x framework from https://www.emgu.com/wiki/index.php/Main_Page
 To run app you should put these libraries into the bin folder (Debug or Release)
 I used EMGU CV x64 version, so I put these libraries along this path *\bin\Debug\x64*
 * concrt140.dll
@@ -16,7 +16,9 @@ You should find it in the bin folder and it called Logs
 ## For darcula or metro themes I used WPFToolkit and WPFToolkit.DataVisualization (JenniLe, Shimmy)
 To change themes manually you should comment old and uncomment required theme in App.xaml f.e Metro Dark Theme:
 
-```xml
+<details> 
+  <summary>Q1: What is the best Language in the World? </summary>
+   ```xml
       <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -52,6 +54,7 @@ To change themes manually you should comment old and uncomment required theme in
         </ResourceDictionary>
     </Application.Resources>
 ```
+</details>
 
 ## UI Layuot: 
 
