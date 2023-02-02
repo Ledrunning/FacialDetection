@@ -18,8 +18,8 @@ To change themes manually you should comment old and uncomment required theme in
 
 <details> 
   <summary>Theme settings in Application.Resources</summary>
-    ```xml
-        <Application.Resources>
+  ```xml
+  <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <!-- IG Theme -->
@@ -53,7 +53,7 @@ To change themes manually you should comment old and uncomment required theme in
             </Style>
         </ResourceDictionary>
         </Application.Resources>
-     ```
+  ```
 </details>
 
 ## UI Layuot: 
