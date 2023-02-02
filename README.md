@@ -17,8 +17,8 @@ You should find it in the bin folder and it called Logs
 To change themes manually you should comment old and uncomment required theme in App.xaml f.e Metro Dark Theme:
 
 <details> 
-  <summary>Q1: What is the best Language in the World? </summary>
-   ```xml
+  <summary>Theme settings in Application.Resources</summary>
+    ```xml
       <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
