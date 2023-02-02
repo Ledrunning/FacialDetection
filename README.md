@@ -1,12 +1,18 @@
 # Simple WPF MVVM Desktop application for facial detection in real time from web camera via Emgu
-## This application use Emgu 3.x framework from https://www.emgu.com/wiki/index.php/Main_Page
-To run app you should put these libraries into the bin folder (Debug or Release)
+## This application use Emgu CV 3.2 framework from https://www.emgu.com/wiki/index.php/Main_Page
+
+Emgu CV 3.2 version documentation available by current link: https://www.emgu.com/wiki/index.php/Version_History#Emgu.CV-3.2.0
+Emgu CV 3.2 version download link https://sourceforge.net/projects/emgucv/
+
+To run app you should download Emgu CV from link above, install it, find and put these libraries into the bin folder (Debug or Release)
 I used EMGU CV x64 version, so I put these libraries along this path *\bin\Debug\x64*
 * concrt140.dll
 * cvextern.dll
 * msvcp140.dll
 * opencv_videoio_ffmpeg411_64.dll.dll
 * vcruntime140.dll
+
+Or you be able to insert the libraries described above into your project tree and configure files to the output folder (set it as "copy if newer or copy always")
 
 And don't forget about haarcascade_frontalface_default.xml just set copy to output directory in your project.
 
@@ -57,6 +63,8 @@ To change themes manually you should comment old and uncomment required theme in
   ```
   
 </details>
+
+##If you have any problems, you can always create an Issue!
 
 ## UI Layuot: 
 
