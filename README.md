@@ -18,9 +18,11 @@ To change themes manually you should comment old and uncomment required theme in
 
 <details> 
   <summary>Theme settings in Application.Resources</summary>
+  
           ```xml
   
           ```
+  
 </details>
 
 ## UI Layuot: 
