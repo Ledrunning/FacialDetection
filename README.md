@@ -65,7 +65,7 @@ To change themes manually you should comment old and uncomment required theme in
   
 </details>
 
-##If you have any problems, you can always create an Issue!
+## If you have any problems, you can always create an Issue!
 
 ## UI Layuot: 
 
