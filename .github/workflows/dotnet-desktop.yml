@@ -35,3 +35,7 @@ jobs:
       run: msbuild $env:Solution_Name /p:Configuration=$env:Configuration
       env:
         Configuration: ${{ matrix.configuration }}
+    - name: List packages folder
+      run: |
+        ls -R $env:UserProfile\.nuget\packages
+
