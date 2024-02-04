@@ -27,15 +27,14 @@ jobs:
       uses: microsoft/setup-msbuild@v1.0.2
 
     - name: Restore NuGet packages
-      run: dotnet restore $env:Solution_Name
-      env:
-        Configuration: ${{ matrix.configuration }}
+      run: |
+        nuget restore $env:Solution_Name -PackagesDirectory $env:UserProfile\.nuget\packages
+        ls -R $env:UserProfile\.nuget\packages
+  env:
+    Configuration: ${{ matrix.configuration }}
 
     - name: Build the application
       run: msbuild $env:Solution_Name /p:Configuration=$env:Configuration
       env:
         Configuration: ${{ matrix.configuration }}
-    - name: List packages folder
-      run: |
-        ls -R $env:UserProfile\.nuget\packages
 
