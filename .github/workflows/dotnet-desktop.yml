@@ -16,10 +16,6 @@ jobs:
 
     env:
       Solution_Name: FaceDetectionApp.sln
-      Test_Project_Path: Path\To\Your\TestProject\TestProject.csproj
-      Wap_Project_Directory: Path\To\Your\WapProjectDirectory
-      Wap_Project_Path: Path\To\Your\WapProjectDirectory\YourWapProject.wapproj
-
     steps:
     - name: Checkout
       uses: actions/checkout@v3
