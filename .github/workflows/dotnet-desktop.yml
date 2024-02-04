@@ -26,8 +26,8 @@ jobs:
     - name: Install .NET Framework
       uses: microsoft/setup-msbuild@v1.0.2
 
-    - name: Restore the application
-      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
+    - name: Restore NuGet packages
+      run: dotnet restore $env:Solution_Name
       env:
         Configuration: ${{ matrix.configuration }}
 
@@ -35,10 +35,3 @@ jobs:
       run: msbuild $env:Solution_Name /p:Configuration=$env:Configuration
       env:
         Configuration: ${{ matrix.configuration }}
-
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: Compiled Artifacts
-        path: |
-          Path\To\Your\Project\bin\${{ matrix.configuration }}
