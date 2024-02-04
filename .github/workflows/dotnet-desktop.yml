@@ -2,15 +2,15 @@ name: .NET Desktop
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "main" ]
 
 jobs:
   build:
     strategy:
       matrix:
-        configuration: [Debug, Release]
+        configuration: [Release]
 
     runs-on: windows-latest
 
@@ -30,8 +30,8 @@ jobs:
       run: |
         nuget restore $env:Solution_Name -PackagesDirectory $env:UserProfile\.nuget\packages
         ls -R $env:UserProfile\.nuget\packages
-  env:
-    Configuration: ${{ matrix.configuration }}
+      env:
+        Configuration: ${{ matrix.configuration }}
 
     - name: Build the application
       run: msbuild $env:Solution_Name /p:Configuration=$env:Configuration
