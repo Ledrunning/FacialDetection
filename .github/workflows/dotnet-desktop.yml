@@ -20,22 +20,22 @@ jobs:
       Solution_Name: FaceDetectionApp.sln
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-    - name: Install .NET Framework
-      uses: microsoft/setup-msbuild@v1.0.2
+      - name: Install .NET Framework
+        uses: microsoft/setup-msbuild@v1.0.2
 
-    - name: Restore NuGet packages
-      run: |
-        nuget restore $env:Solution_Name -PackagesDirectory $env:UserProfile\.nuget\packages
-        ls -R $env:UserProfile\.nuget\packages
-      env:
-        Configuration: ${{ matrix.configuration }}
+      - name: Restore NuGet packages
+        run: |
+          nuget restore $env:Solution_Name -PackagesDirectory $env:UserProfile\.nuget\packages
+          ls -R $env:UserProfile\.nuget\packages
+        env:
+          Configuration: ${{ matrix.configuration }}
 
-    - name: Build the application
-      run: msbuild $env:Solution_Name /p:Configuration=$env:Configuration
-      env:
-        Configuration: ${{ matrix.configuration }}
+      - name: Build the application
+        run: msbuild $env:Solution_Name /p:Configuration=$env:Configuration
+        env:
+          Configuration: ${{ matrix.configuration }}
