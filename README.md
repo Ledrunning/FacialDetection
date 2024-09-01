@@ -3,9 +3,9 @@
 
 [![.NET Desktop](https://github.com/Ledrunning/FacialDetection/actions/workflows/dotnet-desktop.yml/badge.svg)](https://github.com/Ledrunning/FacialDetection/actions/workflows/dotnet-desktop.yml)
 
-Emgu CV 3.2 version documentation available by current link: https://www.emgu.com/wiki/index.php/Version_History#Emgu.CV-3.2.0
+Emgu CV 4.1.1 version documentation available by current link: https://www.emgu.com/wiki/index.php/Version_History#Emgu.CV-4.1.1
 
-Emgu CV 3.2 version download link https://sourceforge.net/projects/emgucv/
+Emgu CV 4.1.1 version download link https://sourceforge.net/projects/emgucv/files/emgucv/4.1.1/
 
 To run app you should download Emgu CV from link above, install it, find and put these libraries into the bin folder (Debug or Release)
 I used EMGU CV x64 version, so I put these libraries along this path *\bin\Debug\x64*
