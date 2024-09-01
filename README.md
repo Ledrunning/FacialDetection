@@ -1,5 +1,5 @@
 # Simple WPF MVVM Desktop application for facial detection in real time from web camera via Emgu
-## This application use Emgu CV 3.2 framework from https://www.emgu.com/wiki/index.php/Main_Page
+## This application use Emgu CV 4.1.1 framework from https://www.emgu.com/wiki/index.php/Main_Page
 
 [![.NET Desktop](https://github.com/Ledrunning/FacialDetection/actions/workflows/dotnet-desktop.yml/badge.svg)](https://github.com/Ledrunning/FacialDetection/actions/workflows/dotnet-desktop.yml)
 
