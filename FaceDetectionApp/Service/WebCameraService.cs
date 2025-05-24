@@ -13,12 +13,13 @@ namespace CVCapturePanel.Service
 {
     /// <summary>
     ///     Class for camera call and async background works
-    ///     EMGU version 3.2
+    ///     EMGU version 3.2 -> has been ported to CV 4.1.1 version. 
+	///     current EMGU version is CV 4.1.1
     ///     Libs:
     ///     1.Emgu.CV
     ///     2.Emgu.CV.Structure
-    ///     6.nvcuda.dll needed if have not Nvidia GPU on computer
-    ///     All libs must to be copied into the bin folder
+    ///     6.nvcuda.dll is required if your computer does not have any Nvidia GPUs on it
+    ///     All libraries must be copied to the bin folder
     /// </summary>
     public class WebCameraService : IDisposable
     {
