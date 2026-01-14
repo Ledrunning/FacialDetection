@@ -1,6 +1,12 @@
 # Simple WPF MVVM Desktop application for facial detection in real time from web camera via Emgu
 ## This application use Emgu CV 4.1.1 framework from https://www.emgu.com/wiki/index.php/Main_Page
 
+
+## Attention!
+
+<span style="color:red">The Haar Cascade method is considered outdated compared to modern deep learning approaches for face detection, as it offers lower accuracy and is more prone to false positives. 
+However, it can still be useful for lightweight applications on low-resource devices. </span>
+
 [![.NET Desktop](https://github.com/Ledrunning/FacialDetection/actions/workflows/dotnet-desktop.yml/badge.svg)](https://github.com/Ledrunning/FacialDetection/actions/workflows/dotnet-desktop.yml)
 
 Emgu CV 4.1.1 version documentation available by current link: https://www.emgu.com/wiki/index.php/Version_History#Emgu.CV-4.1.1
@@ -72,3 +78,4 @@ To change themes manually you should comment old and uncomment required theme in
 ## UI Layuot: 
 
 ![Screenshot](uilayout.jpg)
+
